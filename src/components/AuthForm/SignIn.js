@@ -1,67 +1,79 @@
 import {
     Button,
     Container,
+    Fade,
     Grid,
     Link,
     TextField,
-    Typography
-} from "@material-ui/core";
-import { makeStyles } from "@material-ui/core/styles";
-import React, { useState } from "react";
-import { useHistory } from "react-router";
-import { userSignIn } from "../../api/auth.api";
-import { ValidatePassword, ValidateUsername } from "../../shared/ValidateData";
+    Typography,
+} from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+import { useSnackbar } from 'notistack';
+import React, { useState } from 'react';
+import { useHistory } from 'react-router';
+import { userSignIn } from '../../api/auth.api';
+import { ValidatePassword, ValidateUsername } from '../../shared/ValidateData';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
         marginTop: theme.spacing(8),
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center"
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
     },
     avatar: {
         margin: theme.spacing(1),
-        backgroundColor: theme.palette.primary.main
+        backgroundColor: theme.palette.primary.main,
     },
     form: {
-        width: "100%",
-        marginTop: theme.spacing(1)
+        width: '100%',
+        marginTop: theme.spacing(1),
     },
     submit: {
-        margin: theme.spacing(4, 0, 2)
+        margin: theme.spacing(4, 0, 2),
     },
     signUpLink: {
-        cursor: "pointer"
-    }
+        cursor: 'pointer',
+    },
 }));
 
 const SignIn = () => {
     const classes = useStyles();
     const history = useHistory();
+    const { enqueueSnackbar } = useSnackbar();
 
     const [userInput, setUserInput] = useState({
-        username: "",
+        username: '',
         usernameError: false,
-        password: "",
-        passwordError: false
+        password: '',
+        passwordError: false,
     });
+
     const handleUserSignIn = async () => {
         try {
             const body = {
                 username: userInput.username,
-                password: userInput.password
+                password: userInput.password,
             };
             setUserInput({
-                username: "",
+                username: '',
                 usernameError: false,
-                password: "",
-                passwordError: false
+                password: '',
+                passwordError: false,
             });
 
             const response = await userSignIn(body);
             console.log(response);
         } catch {
-            console.log("Error");
+            enqueueSnackbar('Error', {
+                variant: 'error',
+                anchorOrigin: {
+                    vertical: 'top',
+                    horizontal: 'right',
+                },
+                TransitionComponent: Fade,
+            });
+
             // window.location.reload();
         }
     };
@@ -71,14 +83,14 @@ const SignIn = () => {
         if (!ValidateUsername(userInput)) {
             setUserInput((userInput) => ({
                 ...userInput,
-                usernameError: true
+                usernameError: true,
             }));
             return;
         }
         if (!ValidatePassword(userInput)) {
             setUserInput((userInput) => ({
                 ...userInput,
-                passwordError: true
+                passwordError: true,
             }));
             return;
         }
@@ -90,7 +102,7 @@ const SignIn = () => {
         setUserInput((userInput) => ({
             ...userInput,
             [`${e.target.name}Error`]: !e.target.value.trim(),
-            [e.target.name]: e.target.value
+            [e.target.name]: e.target.value,
         }));
     };
 
@@ -114,8 +126,8 @@ const SignIn = () => {
                         error={userInput.usernameError}
                         helperText={
                             userInput.usernameError
-                                ? "Please enter a valid username."
-                                : "Username should have at least one alphabet."
+                                ? 'Please enter a valid username.'
+                                : 'Username should have at least one alphabet.'
                         }
                     />
                     <TextField
@@ -131,8 +143,8 @@ const SignIn = () => {
                         error={userInput.passwordError}
                         helperText={
                             userInput.passwordError
-                                ? "Please enter a valid password."
-                                : "Password should have at least one alphabet."
+                                ? 'Please enter a valid password.'
+                                : 'Password should have at least one alphabet.'
                         }
                     />
                     <Button
@@ -141,23 +153,23 @@ const SignIn = () => {
                         variant="outlined"
                         color={
                             userInput.usernameError || userInput.passwordError
-                                ? "secondary"
-                                : "primary"
+                                ? 'secondary'
+                                : 'primary'
                         }
                         className={classes.submit}
                         onClick={(e) => validateSignInData(e)}>
                         Sign In
                     </Button>
-                    <Grid container className={"justify-content-center"}>
+                    <Grid container className={'justify-content-center'}>
                         <Grid item className="d-flex">
                             <Typography variant="body1" className="mr-1">
                                 Don't have an account?
                             </Typography>
                             <Link
                                 variant="body1"
-                                onClick={() => history.push("/signup")}
+                                onClick={() => history.push('/signup')}
                                 className={classes.signUpLink}>
-                                {"Sign Up"}
+                                {'Sign Up'}
                             </Link>
                         </Grid>
                     </Grid>
