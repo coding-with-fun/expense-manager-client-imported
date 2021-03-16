@@ -1,5 +1,6 @@
 import {
     Button,
+    CircularProgress,
     Container,
     Fade,
     Grid,
@@ -48,8 +49,10 @@ const SignIn = () => {
         password: '',
         passwordError: false,
     });
+    const [loading, setLoading] = useState(false);
 
     const handleUserSignIn = async () => {
+        setLoading(true);
         try {
             const body = {
                 username: userInput.username,
@@ -64,6 +67,7 @@ const SignIn = () => {
 
             const response = await userSignIn(body);
             console.log(response);
+            setLoading(false);
         } catch {
             enqueueSnackbar('Error', {
                 variant: 'error',
@@ -73,8 +77,7 @@ const SignIn = () => {
                 },
                 TransitionComponent: Fade,
             });
-
-            // window.location.reload();
+            setLoading(false);
         }
     };
 
@@ -119,6 +122,7 @@ const SignIn = () => {
                         fullWidth
                         label="Username"
                         name="username"
+                        disabled={loading}
                         autoComplete="username"
                         value={userInput.username}
                         onChange={(e) => handleInput(e)}
@@ -136,6 +140,7 @@ const SignIn = () => {
                         fullWidth
                         label="Password"
                         name="password"
+                        disabled={loading}
                         type="password"
                         autoComplete="current-password"
                         value={userInput.password}
@@ -157,8 +162,9 @@ const SignIn = () => {
                                 : 'primary'
                         }
                         className={classes.submit}
+                        disabled={loading}
                         onClick={(e) => validateSignInData(e)}>
-                        Sign In
+                        {loading ? <CircularProgress size={24} /> : 'Sign In'}
                     </Button>
                     <Grid container className={'justify-content-center'}>
                         <Grid item className="d-flex">
