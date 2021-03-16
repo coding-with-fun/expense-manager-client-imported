@@ -2,18 +2,17 @@ import {
     Button,
     CircularProgress,
     Container,
-    Fade,
     Grid,
     Link,
     TextField,
     Typography,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import { useSnackbar } from 'notistack';
 import React, { useContext, useState } from 'react';
 import { useHistory } from 'react-router';
 import { userSignIn } from '../../api/auth.api';
 import { UserContext } from '../../context/UserContext';
+import ToastNotification from '../../shared/ToastNotification';
 import { ValidatePassword, ValidateUsername } from '../../shared/ValidateData';
 
 const useStyles = makeStyles((theme) => ({
@@ -42,7 +41,6 @@ const useStyles = makeStyles((theme) => ({
 const SignIn = () => {
     const classes = useStyles();
     const history = useHistory();
-    const { enqueueSnackbar } = useSnackbar();
     const { setUserToken } = useContext(UserContext);
 
     const [userInput, setUserInput] = useState({
@@ -75,17 +73,10 @@ const SignIn = () => {
             })
             .catch((error) => {
                 console.log({ error });
-                enqueueSnackbar('Error', {
-                    variant: 'error',
-                    anchorOrigin: {
-                        vertical: 'top',
-                        horizontal: 'right',
-                    },
-                    TransitionComponent: Fade,
-                });
+                ToastNotification('Error');
 
-                // TODO Remove it after API integration
                 setLoading(false);
+                // TODO Remove it after API integration
                 setUserToken('abc');
             });
     };

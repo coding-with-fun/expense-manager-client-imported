@@ -1,25 +1,21 @@
-import Fade from '@material-ui/core/Fade';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { SnackbarProvider } from 'notistack';
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { ToastContainer, Slide } from 'react-toastify';
 import App from './App';
 import { UserProvider } from './context/UserContext';
 import './scss/index.scss';
 
 ReactDOM.render(
     <UserProvider>
-        <SnackbarProvider
-            maxSnack={4}
-            anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-            }}
-            TransitionComponent={Fade}
-            dense
-            autoHideDuration={3000}>
-            <App />
-        </SnackbarProvider>
+        <App />
+        <ToastContainer
+            newestOnTop={true}
+            closeButton={false}
+            pauseOnFocusLoss={false}
+            pauseOnHover={false}
+            transition={Slide}
+        />
     </UserProvider>,
     document.getElementById('root')
 );
