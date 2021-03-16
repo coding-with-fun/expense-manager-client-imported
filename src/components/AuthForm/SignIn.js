@@ -53,32 +53,35 @@ const SignIn = () => {
 
     const handleUserSignIn = async () => {
         setLoading(true);
-        try {
-            const body = {
-                username: userInput.username,
-                password: userInput.password,
-            };
-            setUserInput({
-                username: '',
-                usernameError: false,
-                password: '',
-                passwordError: false,
-            });
 
-            const response = await userSignIn(body);
-            console.log(response);
-            setLoading(false);
-        } catch {
-            enqueueSnackbar('Error', {
-                variant: 'error',
-                anchorOrigin: {
-                    vertical: 'top',
-                    horizontal: 'right',
-                },
-                TransitionComponent: Fade,
+        const body = {
+            username: userInput.username,
+            password: userInput.password,
+        };
+        setUserInput({
+            username: '',
+            usernameError: false,
+            password: '',
+            passwordError: false,
+        });
+
+        userSignIn(body)
+            .then((response) => {
+                console.log(response);
+                setLoading(false);
+            })
+            .catch((error) => {
+                console.log({ error });
+                enqueueSnackbar('Error', {
+                    variant: 'error',
+                    anchorOrigin: {
+                        vertical: 'top',
+                        horizontal: 'right',
+                    },
+                    TransitionComponent: Fade,
+                });
+                setLoading(false);
             });
-            setLoading(false);
-        }
     };
 
     const validateSignInData = (e) => {
