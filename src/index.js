@@ -4,19 +4,22 @@ import { SnackbarProvider } from 'notistack';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
+import { UserProvider } from './context/UserContext';
 import './scss/index.scss';
 
 ReactDOM.render(
-    <SnackbarProvider
-        maxSnack={4}
-        anchorOrigin={{
-            vertical: 'top',
-            horizontal: 'right',
-        }}
-        TransitionComponent={Fade}
-        dense
-        autoHideDuration={3000}>
-        <App />
-    </SnackbarProvider>,
+    <UserProvider>
+        <SnackbarProvider
+            maxSnack={4}
+            anchorOrigin={{
+                vertical: 'top',
+                horizontal: 'right',
+            }}
+            TransitionComponent={Fade}
+            dense
+            autoHideDuration={3000}>
+            <App />
+        </SnackbarProvider>
+    </UserProvider>,
     document.getElementById('root')
 );
