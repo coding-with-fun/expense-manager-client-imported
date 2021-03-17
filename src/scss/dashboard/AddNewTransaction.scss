@@ -1,0 +1,12 @@
+.add-new-transaction-container {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+
+    .MuiButton-contained,
+    .MuiButton-contained:hover {
+        background: var(--primary);
+        color: var(--light);
+    }
+}

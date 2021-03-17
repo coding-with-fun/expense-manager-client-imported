@@ -3,6 +3,7 @@ import React from 'react';
 import IndividualBalance from './IndividualBalance';
 import TotalBalance from './TotalBalance';
 import TransactionHistory from './TransactionHistory';
+import AddNewTransaction from './AddNewTransaction';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -13,6 +14,7 @@ const useStyles = makeStyles((theme) => ({
         height: '86vh',
         flexGrow: 1,
         userSelect: 'none',
+        position: 'relative',
     },
 }));
 
@@ -25,6 +27,7 @@ const Dashboard = () => {
                 <TotalBalance />
                 <IndividualBalance />
                 <TransactionHistory />
+                <AddNewTransaction />
             </Paper>
         </Container>
     );

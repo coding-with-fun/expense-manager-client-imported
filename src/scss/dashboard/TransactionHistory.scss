@@ -1,4 +1,9 @@
 .transaction-history-container {
     margin-top: 30px;
-    width: 100%;
+
+    .heading {
+        font-weight: 600;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid #dcdcdc;
+    }
 }
