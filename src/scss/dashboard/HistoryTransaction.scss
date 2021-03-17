@@ -1,0 +1,14 @@
+.history-transaction-container {
+    margin-bottom: 0.5rem;
+    display: flex;
+
+    .details {
+        padding: 0.5rem;
+        display: flex;
+    }
+
+    .status {
+        padding: 0 10px;
+        background: var(--success);
+    }
+}
