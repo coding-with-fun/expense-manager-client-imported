@@ -2,6 +2,7 @@ import { Container, makeStyles, Paper } from '@material-ui/core';
 import React from 'react';
 import IndividualBalance from './IndividualBalance';
 import TotalBalance from './TotalBalance';
+import TransactionHistory from './TransactionHistory';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -9,9 +10,9 @@ const useStyles = makeStyles((theme) => ({
         padding: theme.spacing(2, 0),
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center',
         height: '86vh',
         flexGrow: 1,
+        userSelect: 'none',
     },
 }));
 
@@ -23,6 +24,7 @@ const Dashboard = () => {
             <Paper elevation={0} className={classes.paper}>
                 <TotalBalance />
                 <IndividualBalance />
+                <TransactionHistory />
             </Paper>
         </Container>
     );
