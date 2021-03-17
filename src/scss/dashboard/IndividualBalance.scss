@@ -1,0 +1,21 @@
+.individual-balance-container {
+    display: flex;
+    margin-top: 20px;
+    padding: 20px 25px;
+    text-align: center;
+    font-size: larger;
+
+    .income-balance,
+    .expense-balance {
+        padding: 0 25px;
+    }
+
+    .income-balance {
+        border-right: 1px solid #dcdcdc;
+        color: var(--teal);
+    }
+
+    .expense-balance {
+        color: var(--red);
+    }
+}
