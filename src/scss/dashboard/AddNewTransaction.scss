@@ -4,9 +4,13 @@
     width: 100%;
     text-align: center;
 
-    .MuiButton-contained,
-    .MuiButton-contained:hover {
+    .MuiFab-primary {
         background: var(--primary);
+        color: var(--light);
+    }
+
+    .MuiFab-primary:hover {
+        background: #1065c1;
         color: var(--light);
     }
 }

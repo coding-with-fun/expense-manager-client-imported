@@ -1,13 +1,14 @@
-import Button from '@material-ui/core/Button';
+import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import React from 'react';
 
 const AddNewTransaction = () => {
     return (
         <div className="add-new-transaction-container">
-            <Button variant="contained" size="large" startIcon={<AddIcon />}>
+            <Fab color="primary" variant="extended">
+                <AddIcon />
                 Add New Transaction
-            </Button>
+            </Fab>
         </div>
     );
 };
