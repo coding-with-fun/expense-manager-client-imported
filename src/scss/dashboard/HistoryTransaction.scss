@@ -1,14 +1,29 @@
 .history-transaction-container {
     margin-bottom: 0.5rem;
     display: flex;
+    cursor: pointer;
+    flex: 1;
 
     .details {
         padding: 0.5rem;
         display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex: 1;
+
+        .title {
+            flex: 1;
+        }
     }
 
-    .status {
-        padding: 0 10px;
+    .success-status {
         background: var(--success);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        svg {
+            color: #fff;
+        }
     }
 }
