@@ -1,0 +1,19 @@
+.new-transaction-modal {
+    .cancel-entry {
+        background: var(--danger);
+        color: #fff;
+    }
+
+    .cancel-entry:hover {
+        background: #c31829;
+    }
+
+    .save-entry {
+        background: var(--success);
+        color: #fff;
+    }
+
+    .save-entry:hover {
+        background: #1d8635;
+    }
+}

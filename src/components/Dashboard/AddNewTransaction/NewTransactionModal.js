@@ -1,4 +1,6 @@
+import DateFnsUtils from '@date-io/date-fns';
 import {
+    Fab,
     FormControl,
     InputAdornment,
     InputLabel,
@@ -6,11 +8,18 @@ import {
     Select,
     TextField,
 } from '@material-ui/core';
-import React, { Fragment } from 'react';
+import CancelIcon from '@material-ui/icons/Cancel';
+import SaveIcon from '@material-ui/icons/Save';
+import {
+    KeyboardDatePicker,
+    KeyboardTimePicker,
+    MuiPickersUtilsProvider,
+} from '@material-ui/pickers';
+import React from 'react';
 
 const NewTransactionModal = () => {
     return (
-        <Fragment>
+        <div className="new-transaction-modal">
             <TextField
                 id="outlined-basic"
                 label="Title"
@@ -29,8 +38,11 @@ const NewTransactionModal = () => {
                 fullWidth
             />
 
-            <div>
-                <FormControl variant="outlined" margin="dense" className="w-25">
+            <div className="d-flex">
+                <FormControl
+                    variant="outlined"
+                    margin="dense"
+                    className="flex-fill mr-3">
                     <InputLabel htmlFor="outlined-age-native-simple">
                         Category
                     </InputLabel>
@@ -47,7 +59,10 @@ const NewTransactionModal = () => {
                     </Select>
                 </FormControl>
 
-                <FormControl margin="dense" variant="outlined" className="w-75">
+                <FormControl
+                    margin="dense"
+                    variant="outlined"
+                    className="flex-fill">
                     <InputLabel htmlFor="outlined-adornment-amount">
                         Amount
                     </InputLabel>
@@ -64,7 +79,49 @@ const NewTransactionModal = () => {
                     />
                 </FormControl>
             </div>
-        </Fragment>
+
+            <MuiPickersUtilsProvider utils={DateFnsUtils} className="d-flex">
+                <KeyboardDatePicker
+                    margin="dense"
+                    inputVariant="outlined"
+                    className="flex-fill mr-3"
+                    id="date-picker-dialog"
+                    label="Date"
+                    format="MM/dd/yyyy"
+                    KeyboardButtonProps={{
+                        'aria-label': 'change date',
+                    }}
+                />
+                <KeyboardTimePicker
+                    margin="dense"
+                    inputVariant="outlined"
+                    id="time-picker"
+                    label="Time"
+                    KeyboardButtonProps={{
+                        'aria-label': 'change time',
+                    }}
+                />
+            </MuiPickersUtilsProvider>
+
+            <div className="d-flex justify-content-around mt-4">
+                <Fab
+                    variant="extended"
+                    aria-label="cancel"
+                    size="medium"
+                    className="cancel-entry">
+                    <CancelIcon className="mr-3" />
+                    Cancel
+                </Fab>
+                <Fab
+                    variant="extended"
+                    aria-label="add"
+                    size="medium"
+                    className="save-entry">
+                    <SaveIcon className="mr-3" />
+                    Save
+                </Fab>
+            </div>
+        </div>
     );
 };
 
