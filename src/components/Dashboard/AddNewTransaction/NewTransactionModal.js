@@ -1,47 +1,70 @@
-import Modal from '@material-ui/core/Modal';
-import Backdrop from '@material-ui/core/Backdrop';
-import Fade from '@material-ui/core/Fade';
-import React from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import {
+    FormControl,
+    InputAdornment,
+    InputLabel,
+    OutlinedInput,
+    Select,
+    TextField,
+} from '@material-ui/core';
+import React, { Fragment } from 'react';
 
-const useStyles = makeStyles((theme) => ({
-    modal: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
-    paper: {
-        backgroundColor: theme.palette.background.paper,
-        boxShadow: theme.shadows[5],
-        padding: theme.spacing(2, 4, 3),
-        outline: 0,
-    },
-}));
-
-const NewTransactionModal = ({ isModalOpen, handleToggleModal }) => {
-    const classes = useStyles();
-
+const NewTransactionModal = () => {
     return (
-        <Modal
-            aria-labelledby="transition-modal-title"
-            aria-describedby="transition-modal-description"
-            className={classes.modal}
-            open={isModalOpen}
-            onClose={handleToggleModal}
-            closeAfterTransition
-            BackdropComponent={Backdrop}
-            BackdropProps={{
-                timeout: 500,
-            }}>
-            <Fade in={isModalOpen}>
-                <div className={classes.paper}>
-                    <h2 id="transition-modal-title">Transition modal</h2>
-                    <p id="transition-modal-description">
-                        react-transition-group animates me.
-                    </p>
-                </div>
-            </Fade>
-        </Modal>
+        <Fragment>
+            <TextField
+                id="outlined-basic"
+                label="Title"
+                variant="outlined"
+                margin="dense"
+                fullWidth
+            />
+
+            <TextField
+                id="outlined-multiline-flexible"
+                label="Description"
+                multiline
+                rows={4}
+                variant="outlined"
+                margin="dense"
+                fullWidth
+            />
+
+            <div>
+                <FormControl variant="outlined" margin="dense" className="w-25">
+                    <InputLabel htmlFor="outlined-age-native-simple">
+                        Category
+                    </InputLabel>
+                    <Select
+                        native
+                        label="Category"
+                        defaultValue={'Expense'}
+                        inputProps={{
+                            name: 'category',
+                            id: 'outlined-category-native-simple',
+                        }}>
+                        <option value={'Expense'}>Expense</option>
+                        <option value={'Income'}>Income</option>
+                    </Select>
+                </FormControl>
+
+                <FormControl margin="dense" variant="outlined" className="w-75">
+                    <InputLabel htmlFor="outlined-adornment-amount">
+                        Amount
+                    </InputLabel>
+                    <OutlinedInput
+                        id="outlined-adornment-amount"
+                        type="number"
+                        InputLabelProps={{
+                            shrink: true,
+                        }}
+                        startAdornment={
+                            <InputAdornment position="start">$</InputAdornment>
+                        }
+                        labelWidth={60}
+                    />
+                </FormControl>
+            </div>
+        </Fragment>
     );
 };
 
