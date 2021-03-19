@@ -11,18 +11,50 @@ import {
 import CancelIcon from '@material-ui/icons/Cancel';
 import SaveIcon from '@material-ui/icons/Save';
 import {
-    KeyboardDatePicker,
-    KeyboardTimePicker,
+    DatePicker,
     MuiPickersUtilsProvider,
+    TimePicker,
 } from '@material-ui/pickers';
-import React from 'react';
+import React, { useState } from 'react';
 
 const NewTransactionModal = () => {
+    const [newTransactionData, setNewTransactionData] = useState({
+        title: '',
+        description: '',
+        category: 'Expense',
+        amount: null,
+        date: new Date(),
+        time: new Date(),
+    });
+
+    const handleSaveInput = (event) => {
+        const inputName = event.target.name;
+
+        setNewTransactionData((userInput) => ({
+            ...userInput,
+            [inputName]: event.target.value,
+        }));
+    };
+
+    const handleSaveDate = (inputName, data) => {
+        setNewTransactionData((userInput) => ({
+            ...userInput,
+            [inputName]: data,
+        }));
+    };
+
+    const handleSaveData = () => {
+        console.log(newTransactionData);
+    };
+
     return (
         <div className="new-transaction-modal">
             <TextField
                 id="outlined-basic"
                 label="Title"
+                name="title"
+                value={newTransactionData.title}
+                onChange={handleSaveInput}
                 variant="outlined"
                 margin="dense"
                 fullWidth
@@ -31,6 +63,9 @@ const NewTransactionModal = () => {
             <TextField
                 id="outlined-multiline-flexible"
                 label="Description"
+                name="description"
+                value={newTransactionData.description}
+                onChange={handleSaveInput}
                 multiline
                 rows={4}
                 variant="outlined"
@@ -49,6 +84,9 @@ const NewTransactionModal = () => {
                     <Select
                         native
                         label="Category"
+                        name="category"
+                        value={newTransactionData.category}
+                        onChange={handleSaveInput}
                         defaultValue={'Expense'}
                         inputProps={{
                             name: 'category',
@@ -69,6 +107,9 @@ const NewTransactionModal = () => {
                     <OutlinedInput
                         id="outlined-adornment-amount"
                         type="number"
+                        name="amount"
+                        value={newTransactionData.amount}
+                        onChange={handleSaveInput}
                         InputLabelProps={{
                             shrink: true,
                         }}
@@ -81,22 +122,33 @@ const NewTransactionModal = () => {
             </div>
 
             <MuiPickersUtilsProvider utils={DateFnsUtils} className="d-flex">
-                <KeyboardDatePicker
+                <DatePicker
                     margin="dense"
                     inputVariant="outlined"
                     className="flex-fill mr-3"
                     id="date-picker-dialog"
                     label="Date"
-                    format="MM/dd/yyyy"
+                    name="date"
+                    value={newTransactionData.date}
+                    autoOk
+                    disableFuture
+                    onChange={(event) => handleSaveDate('date', event)}
+                    animateYearScrolling
+                    format="dd/MM/yyyy"
                     KeyboardButtonProps={{
                         'aria-label': 'change date',
                     }}
                 />
-                <KeyboardTimePicker
+                <TimePicker
                     margin="dense"
                     inputVariant="outlined"
                     id="time-picker"
                     label="Time"
+                    name="time"
+                    value={newTransactionData.time}
+                    autoOk
+                    disableFuture
+                    onChange={(event) => handleSaveDate('time', event)}
                     KeyboardButtonProps={{
                         'aria-label': 'change time',
                     }}
@@ -116,7 +168,8 @@ const NewTransactionModal = () => {
                     variant="extended"
                     aria-label="add"
                     size="medium"
-                    className="save-entry">
+                    className="save-entry"
+                    onClick={handleSaveData}>
                     <SaveIcon className="mr-3" />
                     Save
                 </Fab>
