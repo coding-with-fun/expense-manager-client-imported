@@ -7,4 +7,14 @@
         margin-bottom: 1rem;
         border-bottom: 1px solid #dcdcdc;
     }
+
+    .see-more {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-flow: column;
+        cursor: pointer;
+        width: fit-content;
+        margin: auto;
+    }
 }
