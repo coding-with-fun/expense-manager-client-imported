@@ -20,7 +20,7 @@ const TopBar = () => {
     };
 
     return (
-        <Navbar light expand="md">
+        <Navbar light expand="md" fixed="top">
             <Link to="/" className="navbar-brand">
                 Expense Manager
             </Link>

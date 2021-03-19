@@ -9,4 +9,22 @@
     .MuiFab-root {
         box-shadow: none;
     }
+
+    .edit-icon {
+        background: var(--success);
+        color: #fff;
+    }
+
+    .edit-icon:hover {
+        background: #1d8635;
+    }
+
+    .delete-icon {
+        background: var(--danger);
+        color: #fff;
+    }
+
+    .delete-icon:hover {
+        background: #c31829;
+    }
 }

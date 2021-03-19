@@ -39,18 +39,10 @@ const HistoryTransaction = () => {
                     horizontal: 'left',
                 }}
                 className="history-transaction-popover-container ml-4">
-                <Fab
-                    size="small"
-                    aria-label="add"
-                    className="mb-2"
-                    style={{ background: '#28a745', color: '#fff' }}>
+                <Fab size="small" aria-label="edit" className="mb-2 edit-icon">
                     <EditIcon />
                 </Fab>
-                <Fab
-                    size="small"
-                    color="secondary"
-                    aria-label="edit"
-                    style={{ background: '#dc3545', color: '#fff' }}>
+                <Fab size="small" aria-label="edit" className="delete-icon">
                     <DeleteIcon />
                 </Fab>
             </Popover>
