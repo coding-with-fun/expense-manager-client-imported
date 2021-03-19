@@ -24,7 +24,6 @@ const NewTransactionModal = () => {
         category: 'Expense',
         amount: null,
         date: new Date(),
-        time: new Date(),
     });
 
     const handleSaveInput = (event) => {
@@ -36,10 +35,10 @@ const NewTransactionModal = () => {
         }));
     };
 
-    const handleSaveDate = (inputName, data) => {
+    const handleSaveDate = (data) => {
         setNewTransactionData((userInput) => ({
             ...userInput,
-            [inputName]: data,
+            date: data,
         }));
     };
 
@@ -132,7 +131,7 @@ const NewTransactionModal = () => {
                     value={newTransactionData.date}
                     autoOk
                     disableFuture
-                    onChange={(event) => handleSaveDate('date', event)}
+                    onChange={handleSaveDate}
                     animateYearScrolling
                     format="dd/MM/yyyy"
                     KeyboardButtonProps={{
@@ -145,10 +144,9 @@ const NewTransactionModal = () => {
                     id="time-picker"
                     label="Time"
                     name="time"
-                    value={newTransactionData.time}
+                    value={newTransactionData.date}
                     autoOk
-                    disableFuture
-                    onChange={(event) => handleSaveDate('time', event)}
+                    onChange={handleSaveDate}
                     KeyboardButtonProps={{
                         'aria-label': 'change time',
                     }}
