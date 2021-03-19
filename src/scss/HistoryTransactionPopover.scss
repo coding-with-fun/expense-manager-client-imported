@@ -1,0 +1,12 @@
+.history-transaction-popover-container {
+    .MuiPaper-root {
+        background: transparent;
+        flex-direction: column;
+        display: flex;
+    }
+
+    .MuiPaper-elevation8,
+    .MuiFab-root {
+        box-shadow: none;
+    }
+}
