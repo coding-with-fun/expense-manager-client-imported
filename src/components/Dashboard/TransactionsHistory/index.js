@@ -1,7 +1,7 @@
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import React from 'react';
 import { useHistory } from 'react-router';
-import HistoryTransaction from './HistoryTransaction';
+import HistoryTransaction from '../../HistoryTransaction';
 
 const TransactionHistory = () => {
     const history = useHistory();
