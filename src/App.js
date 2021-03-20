@@ -5,7 +5,9 @@ import WrappedRoutes from './routes/WrappedRoutes';
 
 function App({ dispatch }) {
     useEffect(() => {
-        dispatch(checkUserAuthentication());
+        setTimeout(function () {
+            dispatch(checkUserAuthentication());
+        }, 3000);
         // eslint-disable-next-line
     }, []);
 
