@@ -95,7 +95,7 @@ const NewTransactionModal = ({ handleToggleModal }) => {
                 <FormControl
                     variant="outlined"
                     margin="dense"
-                    className="flex-fill mr-3">
+                    className="w-50 flex-fill mr-3">
                     <InputLabel htmlFor="outlined-age-native-simple">
                         Category
                     </InputLabel>
@@ -115,10 +115,7 @@ const NewTransactionModal = ({ handleToggleModal }) => {
                     </Select>
                 </FormControl>
 
-                <FormControl
-                    margin="dense"
-                    variant="outlined"
-                    className="flex-fill">
+                <FormControl margin="dense" variant="outlined">
                     <InputLabel htmlFor="outlined-adornment-amount">
                         Amount
                     </InputLabel>
@@ -139,38 +136,35 @@ const NewTransactionModal = ({ handleToggleModal }) => {
                 </FormControl>
             </div>
 
-            <MuiPickersUtilsProvider utils={DateFnsUtils} className="d-flex">
-                <DatePicker
-                    margin="dense"
-                    inputVariant="outlined"
-                    className="flex-fill mr-3"
-                    id="date-picker-dialog"
-                    label="Date"
-                    name="date"
-                    value={newTransactionData.date}
-                    autoOk
-                    disableFuture
-                    onChange={handleSaveDate}
-                    animateYearScrolling
-                    format="dd/MM/yyyy"
-                    KeyboardButtonProps={{
-                        'aria-label': 'change date',
-                    }}
-                />
-                <TimePicker
-                    margin="dense"
-                    inputVariant="outlined"
-                    id="time-picker"
-                    label="Time"
-                    name="time"
-                    value={newTransactionData.date}
-                    autoOk
-                    onChange={handleSaveDate}
-                    KeyboardButtonProps={{
-                        'aria-label': 'change time',
-                    }}
-                />
-            </MuiPickersUtilsProvider>
+            <div className="d-flex">
+                <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                    <DatePicker
+                        margin="dense"
+                        inputVariant="outlined"
+                        className="flex-fill mr-3"
+                        id="date-picker-dialog"
+                        label="Date"
+                        name="date"
+                        value={newTransactionData.date}
+                        autoOk
+                        disableFuture
+                        onChange={handleSaveDate}
+                        animateYearScrolling
+                        format="dd/MM/yyyy"
+                    />
+                    <TimePicker
+                        margin="dense"
+                        inputVariant="outlined"
+                        className="flex-fill"
+                        id="time-picker"
+                        label="Time"
+                        name="time"
+                        value={newTransactionData.date}
+                        autoOk
+                        onChange={handleSaveDate}
+                    />
+                </MuiPickersUtilsProvider>
+            </div>
 
             <div className="d-flex justify-content-around mt-4">
                 <Fab
