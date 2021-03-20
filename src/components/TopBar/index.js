@@ -1,11 +1,12 @@
 import React, { useContext, useState } from 'react';
+import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import { Collapse, Nav, Navbar, NavbarToggler, NavItem } from 'reactstrap';
 import { UserContext } from '../../context/UserContext';
 
-const TopBar = () => {
+const TopBar = ({ userToken }) => {
     const [isOpen, setIsOpen] = useState(false);
-    const { userToken, setUserToken } = useContext(UserContext);
+    const { setUserToken } = useContext(UserContext);
 
     const toggle = () => {
         if (document.documentElement.clientWidth < 768) {
@@ -60,4 +61,10 @@ const TopBar = () => {
     );
 };
 
-export default withRouter(TopBar);
+export default withRouter(
+    connect((state) => {
+        return {
+            userToken: state.auth.token,
+        };
+    })(TopBar)
+);

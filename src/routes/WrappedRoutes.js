@@ -1,4 +1,5 @@
-import React, { useContext } from 'react';
+import React from 'react';
+import { connect } from 'react-redux';
 import {
     BrowserRouter as Router,
     Redirect,
@@ -11,39 +12,36 @@ import Dashboard from '../components/Dashboard';
 import Guest from '../components/Guest';
 import TopBar from '../components/TopBar';
 import Transactions from '../components/Transactions';
-import { UserContext } from '../context/UserContext';
 
-const WrappedRoutes = () => {
-    const { userToken } = useContext(UserContext);
-
+const WrappedRoutes = ({ userToken }) => {
     return (
         <Router>
             <TopBar />
 
-            {userToken && (
-                <Switch>
-                    {!userToken && <Route exact path="/" component={Guest} />}
-                    {userToken && (
-                        <Route exact path="/" component={Dashboard} />
-                    )}
-                    {userToken && (
-                        <Route
-                            exact
-                            path="/transactions"
-                            component={Transactions}
-                        />
-                    )}
-                    {!userToken && (
-                        <Route exact path="/signin" component={SignIn} />
-                    )}
-                    {!userToken && (
-                        <Route exact path="/signup" component={SignUp} />
-                    )}
-                    <Redirect to="/" />
-                </Switch>
-            )}
+            <Switch>
+                {!userToken && <Route exact path="/" component={Guest} />}
+                {userToken && <Route exact path="/" component={Dashboard} />}
+                {userToken && (
+                    <Route
+                        exact
+                        path="/transactions"
+                        component={Transactions}
+                    />
+                )}
+                {!userToken && (
+                    <Route exact path="/signin" component={SignIn} />
+                )}
+                {!userToken && (
+                    <Route exact path="/signup" component={SignUp} />
+                )}
+                <Redirect to="/" />
+            </Switch>
         </Router>
     );
 };
 
-export default WrappedRoutes;
+export default connect((state) => {
+    return {
+        userToken: state.auth.token,
+    };
+})(WrappedRoutes);
