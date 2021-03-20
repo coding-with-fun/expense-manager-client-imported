@@ -15,16 +15,20 @@ const TransactionHistory = ({ transactions }) => {
         <div className="transaction-history-container">
             <div className="heading">Last 3 Transactions</div>
 
-            {transactions.map((transaction) => {
-                return <HistoryTransaction transaction={transaction} />;
+            {transactions.slice(0, 3).map((transaction, index) => {
+                return (
+                    <HistoryTransaction transaction={transaction} key={index} />
+                );
             })}
 
-            {transactions.length > 3 ? (
+            {transactions.length > 3 && (
                 <p className="see-more mt-4" onClick={routeToAllTransactions}>
                     See More
                     <ExpandMoreIcon />
                 </p>
-            ) : (
+            )}
+
+            {transactions.length < 1 && (
                 <p className="text-center">No Transactions to show...</p>
             )}
         </div>

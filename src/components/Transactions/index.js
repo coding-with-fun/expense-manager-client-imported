@@ -18,8 +18,10 @@ const Transactions = ({ transactions }) => {
 
     return (
         <Container component="main" maxWidth="xs" className="all-transactions">
-            {transactions.map((transaction) => {
-                return <HistoryTransaction transaction={transaction} />;
+            {transactions.map((transaction, index) => {
+                return (
+                    <HistoryTransaction transaction={transaction} key={index} />
+                );
             })}
 
             {transactions.length < 1 && (

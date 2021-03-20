@@ -25,6 +25,8 @@ import {
     TimePicker,
 } from '@material-ui/pickers';
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import { insertTransaction } from '../../../actions/transactionsActions';
 
 const useStyles = makeStyles((theme) => ({
     modal: {
@@ -44,7 +46,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const AddNewTransaction = () => {
+const AddNewTransaction = ({ dispatch }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [newTransactionData, setNewTransactionData] = useState({
         title: '',
@@ -73,6 +75,7 @@ const AddNewTransaction = () => {
     };
 
     const handleSaveData = () => {
+        dispatch(insertTransaction(newTransactionData));
         handleCloseModal();
     };
 
@@ -243,4 +246,4 @@ const AddNewTransaction = () => {
     );
 };
 
-export default AddNewTransaction;
+export default connect()(AddNewTransaction);
