@@ -55,13 +55,13 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const TransactionInfoModal = ({ isModalOpen, setIsModalOpen }) => {
+const TransactionInfoModal = ({ isModalOpen, setIsModalOpen, transaction }) => {
     const [newTransactionData, setNewTransactionData] = useState({
-        title: '',
-        description: '',
-        category: 'Expense',
-        amount: '',
-        date: new Date(),
+        title: transaction.title,
+        description: transaction.description,
+        category: transaction.category,
+        amount: transaction.amount,
+        date: transaction.date,
     });
     const [isDeleteAlertOpen, setIsDeleteAlertOpen] = useState(false);
     const [editEntry, setEditEntry] = useState(false);
@@ -90,11 +90,11 @@ const TransactionInfoModal = ({ isModalOpen, setIsModalOpen }) => {
 
     const handleCloseModal = () => {
         setNewTransactionData({
-            title: '',
-            description: '',
-            category: 'Expense',
-            amount: '',
-            date: new Date(),
+            title: transaction.title,
+            description: transaction.description,
+            category: transaction.category,
+            amount: transaction.amount,
+            date: transaction.date,
         });
         setEditEntry(false);
         setIsDeleteAlertOpen(false);

@@ -1,8 +1,9 @@
 import { Paper } from '@material-ui/core';
 import React, { useState } from 'react';
 import TransactionInfoModal from './TransactionInfoModal';
+import moment from 'moment';
 
-const HistoryTransaction = () => {
+const HistoryTransaction = ({ transaction }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     return (
@@ -14,10 +15,12 @@ const HistoryTransaction = () => {
                 }}>
                 <div className="details">
                     <div className="info w-100 mr-3">
-                        <div className="date mb-3">12 Jan 2020</div>
-                        <div className="title">Hello</div>
+                        <div className="date mb-3">
+                            {moment(transaction.date).format('DD MMMM YYYY')}
+                        </div>
+                        <div className="title">{transaction.title}</div>
                     </div>
-                    <div className="amount">$300</div>
+                    <div className="amount">${transaction.amount}</div>
                 </div>
                 <div className="success-status" />
             </div>
@@ -25,6 +28,7 @@ const HistoryTransaction = () => {
             <TransactionInfoModal
                 isModalOpen={isModalOpen}
                 setIsModalOpen={setIsModalOpen}
+                transaction={transaction}
             />
         </Paper>
     );
