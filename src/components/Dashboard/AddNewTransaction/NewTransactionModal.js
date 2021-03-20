@@ -4,6 +4,7 @@ import {
     FormControl,
     InputAdornment,
     InputLabel,
+    MenuItem,
     OutlinedInput,
     Select,
     TextField,
@@ -22,7 +23,7 @@ const NewTransactionModal = ({ handleToggleModal }) => {
         title: '',
         description: '',
         category: 'Expense',
-        amount: null,
+        amount: '',
         date: new Date(),
     });
 
@@ -48,7 +49,7 @@ const NewTransactionModal = ({ handleToggleModal }) => {
             title: '',
             description: '',
             category: 'Expense',
-            amount: null,
+            amount: '',
             date: new Date(),
         });
         handleToggleModal();
@@ -59,7 +60,7 @@ const NewTransactionModal = ({ handleToggleModal }) => {
             title: '',
             description: '',
             category: 'Expense',
-            amount: null,
+            amount: '',
             date: new Date(),
         });
         handleToggleModal();
@@ -68,7 +69,7 @@ const NewTransactionModal = ({ handleToggleModal }) => {
     return (
         <div className="new-transaction-modal">
             <TextField
-                id="outlined-basic"
+                id="title"
                 label="Title"
                 name="title"
                 value={newTransactionData.title}
@@ -79,7 +80,7 @@ const NewTransactionModal = ({ handleToggleModal }) => {
             />
 
             <TextField
-                id="outlined-multiline-flexible"
+                id="description"
                 label="Description"
                 name="description"
                 value={newTransactionData.description}
@@ -96,38 +97,27 @@ const NewTransactionModal = ({ handleToggleModal }) => {
                     variant="outlined"
                     margin="dense"
                     className="w-50 flex-fill mr-3">
-                    <InputLabel htmlFor="outlined-age-native-simple">
-                        Category
-                    </InputLabel>
+                    <InputLabel htmlFor="category">Category</InputLabel>
                     <Select
-                        native
-                        label="Category"
-                        name="category"
+                        labelId="category"
+                        id="category"
                         value={newTransactionData.category}
                         onChange={handleSaveInput}
-                        defaultValue={'Expense'}
-                        inputProps={{
-                            name: 'category',
-                            id: 'outlined-category-native-simple',
-                        }}>
-                        <option value={'Expense'}>Expense</option>
-                        <option value={'Income'}>Income</option>
+                        label="Category"
+                        name="category">
+                        <MenuItem value={'Expense'}>Expense</MenuItem>
+                        <MenuItem value={'Income'}>Income</MenuItem>
                     </Select>
                 </FormControl>
 
                 <FormControl margin="dense" variant="outlined">
-                    <InputLabel htmlFor="outlined-adornment-amount">
-                        Amount
-                    </InputLabel>
+                    <InputLabel htmlFor="amount">Amount</InputLabel>
                     <OutlinedInput
-                        id="outlined-adornment-amount"
+                        id="amount"
                         type="number"
                         name="amount"
                         value={newTransactionData.amount}
                         onChange={handleSaveInput}
-                        InputLabelProps={{
-                            shrink: true,
-                        }}
                         startAdornment={
                             <InputAdornment position="start">$</InputAdornment>
                         }

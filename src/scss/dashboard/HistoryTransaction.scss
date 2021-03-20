@@ -6,6 +6,7 @@
 
     .details {
         padding: 0.5rem;
+        padding-right: 1rem;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -25,16 +26,6 @@
 
     .success-status {
         background: var(--success);
-        display: flex;
-        justify-content: center;
-        align-items: center;
-
-        svg {
-            color: #fff;
-        }
-    }
-
-    .success-status:hover {
-        background: #1d8635;
+        width: 10px;
     }
 }

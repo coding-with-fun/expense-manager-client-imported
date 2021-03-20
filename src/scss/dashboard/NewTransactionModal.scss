@@ -1,19 +1,23 @@
 .new-transaction-modal {
-    .cancel-entry {
+    .cancel-entry,
+    .delete-entry {
         background: var(--danger);
         color: #fff;
     }
 
-    .cancel-entry:hover {
+    .cancel-entry:hover,
+    .delete-entry:hover {
         background: #c31829;
     }
 
-    .save-entry {
+    .save-entry,
+    .edit-entry {
         background: var(--success);
         color: #fff;
     }
 
-    .save-entry:hover {
+    .save-entry:hover,
+    .edit-entry:hover {
         background: #1d8635;
     }
 }
