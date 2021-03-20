@@ -1,9 +1,21 @@
 import { Container } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import React from 'react';
 import { connect } from 'react-redux';
 import HistoryTransaction from '../HistoryTransaction';
 
+const useStyles = makeStyles(() => ({
+    noData: {
+        height: '82vh',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+}));
+
 const Transactions = ({ transactions }) => {
+    const classes = useStyles();
+
     return (
         <Container component="main" maxWidth="xs" className="all-transactions">
             {transactions.map((transaction) => {
@@ -11,7 +23,9 @@ const Transactions = ({ transactions }) => {
             })}
 
             {transactions.length < 1 && (
-                <p className="text-center">No Transactions to show...</p>
+                <p className={`text-center ${classes.noData}`}>
+                    No Transactions to show...
+                </p>
             )}
         </Container>
     );

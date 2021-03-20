@@ -1,9 +1,9 @@
 import { Container, makeStyles, Paper } from '@material-ui/core';
 import React from 'react';
+import AddNewTransaction from './AddNewTransaction';
 import IndividualBalance from './IndividualBalance';
 import TotalBalance from './TotalBalance';
 import TransactionHistory from './TransactionsHistory';
-import AddNewTransaction from './AddNewTransaction';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -13,7 +13,6 @@ const useStyles = makeStyles((theme) => ({
         flexDirection: 'column',
         height: '86vh',
         flexGrow: 1,
-        userSelect: 'none',
         position: 'relative',
     },
 }));
