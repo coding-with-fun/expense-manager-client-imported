@@ -20,7 +20,10 @@ const HistoryTransaction = () => {
     return (
         <Paper variant="outlined" className="history-transaction-container">
             <div className="details">
-                <div className="title">Hello</div>
+                <div className="info w-100 mr-3">
+                    <div className="date mb-3">12 Jan 2020</div>
+                    <div className="title">Hello</div>
+                </div>
                 <div className="amount">$300</div>
             </div>
             <div className="success-status" onClick={handleClick}>

@@ -17,7 +17,7 @@ import {
 } from '@material-ui/pickers';
 import React, { useState } from 'react';
 
-const NewTransactionModal = () => {
+const NewTransactionModal = ({ handleToggleModal }) => {
     const [newTransactionData, setNewTransactionData] = useState({
         title: '',
         description: '',
@@ -44,6 +44,25 @@ const NewTransactionModal = () => {
 
     const handleSaveData = () => {
         console.log(newTransactionData);
+        setNewTransactionData({
+            title: '',
+            description: '',
+            category: 'Expense',
+            amount: null,
+            date: new Date(),
+        });
+        handleToggleModal();
+    };
+
+    const handleCloseModal = () => {
+        setNewTransactionData({
+            title: '',
+            description: '',
+            category: 'Expense',
+            amount: null,
+            date: new Date(),
+        });
+        handleToggleModal();
     };
 
     return (
@@ -158,7 +177,8 @@ const NewTransactionModal = () => {
                     variant="extended"
                     aria-label="cancel"
                     size="medium"
-                    className="cancel-entry">
+                    className="cancel-entry"
+                    onClick={handleCloseModal}>
                     <CancelIcon className="mr-3" />
                     Cancel
                 </Fab>

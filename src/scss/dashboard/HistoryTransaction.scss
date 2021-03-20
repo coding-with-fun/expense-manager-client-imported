@@ -11,8 +11,15 @@
         align-items: center;
         flex: 1;
 
-        .title {
-            flex: 1;
+        .info {
+            .date {
+                font-weight: 600;
+                font-size: 0.8rem;
+            }
+
+            .title {
+                flex: 1;
+            }
         }
     }
 

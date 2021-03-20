@@ -47,7 +47,9 @@ const AddNewTransaction = () => {
                 }}>
                 <Fade in={isModalOpen}>
                     <div className={classes.paper}>
-                        <NewTransactionModal />
+                        <NewTransactionModal
+                            handleToggleModal={handleToggleModal}
+                        />
                     </div>
                 </Fade>
             </Modal>
