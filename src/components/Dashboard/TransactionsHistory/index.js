@@ -2,7 +2,7 @@ import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import React from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router';
-import HistoryTransaction from '../../HistoryTransaction';
+import HistoryTransaction from '../../TransactionHistory/HistoryTransaction';
 
 const TransactionHistory = ({ transactions }) => {
     const history = useHistory();

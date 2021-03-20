@@ -2,7 +2,7 @@ import { Container } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import React from 'react';
 import { connect } from 'react-redux';
-import HistoryTransaction from '../HistoryTransaction';
+import HistoryTransaction from '../TransactionHistory/HistoryTransaction';
 
 const useStyles = makeStyles(() => ({
     noData: {
