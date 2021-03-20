@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import TransactionInfoModal from './TransactionInfoModal';
 import moment from 'moment';
 
-const HistoryTransaction = ({ transaction }) => {
+const HistoryTransaction = ({ transaction, index }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
 
     return (
@@ -29,6 +29,7 @@ const HistoryTransaction = ({ transaction }) => {
                 isModalOpen={isModalOpen}
                 setIsModalOpen={setIsModalOpen}
                 transaction={transaction}
+                index={index}
             />
         </Paper>
     );

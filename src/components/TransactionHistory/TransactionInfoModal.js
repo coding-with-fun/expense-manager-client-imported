@@ -32,6 +32,8 @@ import {
     TimePicker,
 } from '@material-ui/pickers';
 import React, { useState } from 'react';
+import { connect } from 'react-redux';
+import { deleteTransaction } from '../../actions/transactionsActions';
 
 const useStyles = makeStyles((theme) => ({
     modal: {
@@ -55,7 +57,13 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const TransactionInfoModal = ({ isModalOpen, setIsModalOpen, transaction }) => {
+const TransactionInfoModal = ({
+    isModalOpen,
+    setIsModalOpen,
+    transaction,
+    index,
+    dispatch,
+}) => {
     const [newTransactionData, setNewTransactionData] = useState({
         title: transaction.title,
         description: transaction.description,
@@ -86,6 +94,10 @@ const TransactionInfoModal = ({ isModalOpen, setIsModalOpen, transaction }) => {
 
     const handleSaveData = () => {
         handleCloseModal();
+    };
+
+    const handleDeleteEntry = () => {
+        dispatch(deleteTransaction(index));
     };
 
     const handleCloseModal = () => {
@@ -275,7 +287,7 @@ const TransactionInfoModal = ({ isModalOpen, setIsModalOpen, transaction }) => {
                                 color="primary">
                                 Cancel
                             </Button>
-                            <Button onClick={handleCloseModal} color="primary">
+                            <Button onClick={handleDeleteEntry} color="primary">
                                 Continue
                             </Button>
                         </DialogActions>
@@ -286,4 +298,4 @@ const TransactionInfoModal = ({ isModalOpen, setIsModalOpen, transaction }) => {
     );
 };
 
-export default TransactionInfoModal;
+export default connect()(TransactionInfoModal);
