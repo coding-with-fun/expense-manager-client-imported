@@ -1,7 +1,15 @@
-import WrappedRoutes from "./routes/WrappedRoutes";
+import { useEffect } from 'react';
+import { connect } from 'react-redux';
+import { checkUserAuthentication } from './actions/authActions';
+import WrappedRoutes from './routes/WrappedRoutes';
 
-function App() {
+function App({ dispatch }) {
+    useEffect(() => {
+        dispatch(checkUserAuthentication());
+        // eslint-disable-next-line
+    }, []);
+
     return <WrappedRoutes />;
 }
 
-export default App;
+export default connect()(App);

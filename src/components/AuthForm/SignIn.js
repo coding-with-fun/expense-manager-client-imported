@@ -5,13 +5,14 @@ import {
     Grid,
     Link,
     TextField,
-    Typography
+    Typography,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
+import { connect } from 'react-redux';
 import { useHistory } from 'react-router';
+import { setUserToken } from '../../actions/authActions';
 import { userSignIn } from '../../api/auth.api';
-import { UserContext } from '../../context/UserContext';
 import ToastNotification from '../../shared/ToastNotification';
 import { ValidatePassword, ValidateUsername } from '../../shared/ValidateData';
 
@@ -34,10 +35,9 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const SignIn = () => {
+const SignIn = ({ dispatch }) => {
     const classes = useStyles();
     const history = useHistory();
-    const { setUserToken } = useContext(UserContext);
 
     const [userInput, setUserInput] = useState({
         username: '',
@@ -65,7 +65,7 @@ const SignIn = () => {
             .then((response) => {
                 console.log(response);
                 setLoading(false);
-                setUserToken('abc');
+                dispatch(setUserToken('abc'));
             })
             .catch((error) => {
                 console.log({ error });
@@ -73,7 +73,7 @@ const SignIn = () => {
 
                 setLoading(false);
                 // TODO Remove it after API integration
-                setUserToken('abc');
+                dispatch(setUserToken('abc'));
             });
     };
 
@@ -181,4 +181,4 @@ const SignIn = () => {
     );
 };
 
-export default SignIn;
+export default connect()(SignIn);

@@ -20,7 +20,10 @@ const authReducer = (state = initialState, action) => {
 
         case 'CHECK_USER_AUTHENTICATION':
             const userToken = localStorage.getItem('emc-token');
-            return userToken ? true : false;
+            return {
+                ...state,
+                token: userToken,
+            };
 
         default:
             return state;

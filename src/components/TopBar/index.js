@@ -1,12 +1,11 @@
-import React, { useContext, useState } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { Link, withRouter } from 'react-router-dom';
 import { Collapse, Nav, Navbar, NavbarToggler, NavItem } from 'reactstrap';
-import { UserContext } from '../../context/UserContext';
+import { removeUserToken } from '../../actions/authActions';
 
-const TopBar = ({ userToken }) => {
+const TopBar = ({ userToken, dispatch }) => {
     const [isOpen, setIsOpen] = useState(false);
-    const { setUserToken } = useContext(UserContext);
 
     const toggle = () => {
         if (document.documentElement.clientWidth < 768) {
@@ -14,9 +13,8 @@ const TopBar = ({ userToken }) => {
         }
     };
 
-    const handleSignOut = () => {
-        localStorage.removeItem('emc-token');
-        setUserToken();
+    const handleSignOut = async () => {
+        await dispatch(removeUserToken());
         toggle();
     };
 
