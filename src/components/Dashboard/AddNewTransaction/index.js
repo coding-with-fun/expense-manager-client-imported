@@ -51,7 +51,7 @@ const AddNewTransaction = ({ dispatch }) => {
     const [newTransactionData, setNewTransactionData] = useState({
         title: '',
         description: '',
-        category: 'Expense',
+        category: 'expense',
         amount: '',
         date: new Date(),
     });
@@ -83,7 +83,7 @@ const AddNewTransaction = ({ dispatch }) => {
         setNewTransactionData({
             title: '',
             description: '',
-            category: 'Expense',
+            category: 'expense',
             amount: '',
             date: new Date(),
         });
@@ -159,10 +159,10 @@ const AddNewTransaction = ({ dispatch }) => {
                                         onChange={handleSaveInput}
                                         label="Category"
                                         name="category">
-                                        <MenuItem value={'Expense'}>
+                                        <MenuItem value={'expense'}>
                                             Expense
                                         </MenuItem>
-                                        <MenuItem value={'Income'}>
+                                        <MenuItem value={'income'}>
                                             Income
                                         </MenuItem>
                                     </Select>

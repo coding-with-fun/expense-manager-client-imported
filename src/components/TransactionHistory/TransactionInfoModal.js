@@ -173,7 +173,7 @@ const TransactionInfoModal = ({
                                 onChange={handleSaveInput}
                                 label="Category"
                                 name="category">
-                                <MenuItem value={'Expense'}>Expense</MenuItem>
+                                <MenuItem value={'expense'}>Expense</MenuItem>
                                 <MenuItem value={'Income'}>Income</MenuItem>
                             </Select>
                         </FormControl>

@@ -20,7 +20,11 @@ const Transactions = ({ transactions }) => {
         <Container component="main" maxWidth="xs" className="all-transactions">
             {transactions.map((transaction, index) => {
                 return (
-                    <HistoryTransaction transaction={transaction} key={index} />
+                    <HistoryTransaction
+                        transaction={transaction}
+                        index={index}
+                        key={index}
+                    />
                 );
             })}
 
