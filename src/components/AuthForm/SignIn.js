@@ -51,7 +51,7 @@ const SignIn = ({ dispatch }) => {
         setLoading(true);
 
         const body = {
-            username: userInput.username,
+            userName: userInput.username,
             password: userInput.password,
         };
         setUserInput({
@@ -62,18 +62,15 @@ const SignIn = ({ dispatch }) => {
         });
 
         userSignIn(body)
-            .then((response) => {
-                console.log(response);
-                setLoading(false);
-                dispatch(setUserToken('abc'));
+            .then(async (response) => {
+                const apiRes = response.success;
+                ToastNotification(apiRes.message, 'success');
+                await dispatch(setUserToken(apiRes.token));
             })
             .catch((error) => {
-                console.log({ error });
-                ToastNotification('Error');
-
+                console.error(error.response.data.error);
+                ToastNotification(error.response.data.error.message);
                 setLoading(false);
-                // TODO Remove it after API integration
-                dispatch(setUserToken('abc'));
             });
     };
 

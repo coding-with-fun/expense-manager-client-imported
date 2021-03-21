@@ -1,17 +1,18 @@
 import axios from 'axios';
 import { endpoints } from '../config/appConfigs';
+import { AxiosConfig } from '../shared/AxiosConfig';
 
-const expenseManagerRoot = endpoints.expenseManagerRoot;
+const authRoot = endpoints.expenseManagerRoot + '/auth';
 
-const SIGNIN_URL = expenseManagerRoot + '/signin';
-const SIGNUP_URL = expenseManagerRoot + '/signup';
+const SIGNIN_URL = authRoot + '/signin';
+const SIGNUP_URL = authRoot + '/signup';
 
 export const userSignIn = async (body) => {
-    await axios.post(SIGNIN_URL, body);
-    return body;
+    const response = await axios.post(SIGNIN_URL, body, AxiosConfig);
+    return response.data;
 };
 
 export const userSignUp = async (body) => {
-    await axios.post(SIGNUP_URL, body);
-    return body;
+    const response = await axios.post(SIGNUP_URL, body, AxiosConfig);
+    return response.data;
 };

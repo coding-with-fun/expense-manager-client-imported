@@ -1,5 +1,6 @@
 import { Container, makeStyles, Paper } from '@material-ui/core';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { getUserDetails } from '../../api/user.api';
 import AddNewTransaction from './AddNewTransaction';
 import IndividualBalance from './IndividualBalance';
 import TotalBalance from './TotalBalance';
@@ -19,6 +20,10 @@ const useStyles = makeStyles((theme) => ({
 
 const Dashboard = () => {
     const classes = useStyles();
+
+    useEffect(() => {
+        getUserDetails();
+    }, [])
 
     return (
         <Container component="main" maxWidth="xs">
