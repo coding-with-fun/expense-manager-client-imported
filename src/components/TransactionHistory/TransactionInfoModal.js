@@ -34,6 +34,7 @@ import {
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { deleteTransaction } from '../../actions/transactionsActions';
+import moment from 'moment';
 
 const useStyles = makeStyles((theme) => ({
     modal: {
@@ -88,7 +89,7 @@ const TransactionInfoModal = ({
     const handleSaveDate = (data) => {
         setNewTransactionData((userInput) => ({
             ...userInput,
-            date: data,
+            date: moment(data).format(),
         }));
     };
 

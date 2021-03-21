@@ -27,6 +27,7 @@ import {
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { insertTransaction } from '../../../actions/transactionsActions';
+import moment from 'moment';
 
 const useStyles = makeStyles((theme) => ({
     modal: {
@@ -53,7 +54,7 @@ const AddNewTransaction = ({ dispatch }) => {
         description: '',
         category: 'expense',
         amount: '',
-        date: new Date(),
+        date: moment().format(),
     });
 
     const classes = useStyles();
@@ -70,7 +71,7 @@ const AddNewTransaction = ({ dispatch }) => {
     const handleSaveDate = (data) => {
         setNewTransactionData((userInput) => ({
             ...userInput,
-            date: data,
+            date: moment(data).format(),
         }));
     };
 
@@ -85,7 +86,7 @@ const AddNewTransaction = ({ dispatch }) => {
             description: '',
             category: 'expense',
             amount: '',
-            date: new Date(),
+            date: moment().format(),
         });
         setIsModalOpen(false);
     };
