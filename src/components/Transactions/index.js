@@ -5,8 +5,11 @@ import { connect } from 'react-redux';
 import HistoryTransaction from '../TransactionHistory/HistoryTransaction';
 
 const useStyles = makeStyles(() => ({
+    allTransactions: {
+        height: 'inherit',
+    },
     noData: {
-        height: '82vh',
+        height: 'inherit',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
@@ -17,7 +20,10 @@ const Transactions = ({ transactions }) => {
     const classes = useStyles();
 
     return (
-        <Container component="main" maxWidth="xs" className="all-transactions">
+        <Container
+            component="main"
+            maxWidth="xs"
+            className={classes.allTransactions}>
             {transactions.map((transaction, index) => {
                 return (
                     <HistoryTransaction

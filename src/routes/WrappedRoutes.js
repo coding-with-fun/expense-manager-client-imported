@@ -18,42 +18,55 @@ import Transactions from '../components/Transactions';
 const useStyles = makeStyles(() => ({
     loader: {
         position: 'absolute',
-        top: '50vh',
-        right: '50vw',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: '100vh',
+        width: '100vw',
     },
 }));
 
-const WrappedRoutes = ({ userToken }) => {
+const WrappedRoutes = ({ userToken, loadingToken }) => {
     const classes = useStyles();
 
     return (
         <Router>
-            {userToken ? (
+            {!loadingToken ? (
                 <>
                     <TopBar />
 
-                    <Switch>
-                        {!userToken && (
-                            <Route exact path="/" component={Guest} />
-                        )}
-                        {userToken && (
-                            <Route exact path="/" component={Dashboard} />
-                        )}
-                        {userToken && (
-                            <Route
-                                exact
-                                path="/transactions"
-                                component={Transactions}
-                            />
-                        )}
-                        {!userToken && (
-                            <Route exact path="/signin" component={SignIn} />
-                        )}
-                        {!userToken && (
-                            <Route exact path="/signup" component={SignUp} />
-                        )}
-                        <Redirect to="/" />
-                    </Switch>
+                    <div className="body-content">
+                        <Switch>
+                            {!userToken && (
+                                <Route exact path="/" component={Guest} />
+                            )}
+                            {userToken && (
+                                <Route exact path="/" component={Dashboard} />
+                            )}
+                            {userToken && (
+                                <Route
+                                    exact
+                                    path="/transactions"
+                                    component={Transactions}
+                                />
+                            )}
+                            {!userToken && (
+                                <Route
+                                    exact
+                                    path="/signin"
+                                    component={SignIn}
+                                />
+                            )}
+                            {!userToken && (
+                                <Route
+                                    exact
+                                    path="/signup"
+                                    component={SignUp}
+                                />
+                            )}
+                            <Redirect to="/" />
+                        </Switch>
+                    </div>
                 </>
             ) : (
                 <div className={classes.loader}>

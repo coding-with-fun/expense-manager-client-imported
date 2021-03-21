@@ -11,7 +11,6 @@
 
 body {
     font-family: 'Open Sans', sans-serif;
-    margin-top: 70px;
     -ms-overflow-style: none;
     scrollbar-width: none;
     user-select: none;
@@ -23,4 +22,9 @@ body::-webkit-scrollbar {
 
 .navbar {
     background: #fff;
+}
+
+.body-content {
+    margin-top: 70px;
+    height: calc(100vh - 70px);
 }

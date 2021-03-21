@@ -1,17 +1,20 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { checkUserAuthentication } from './actions/authActions';
 import WrappedRoutes from './routes/WrappedRoutes';
 
 function App({ dispatch }) {
+    const [loadingToken, setLoadingToken] = useState(true);
+
     useEffect(() => {
         setTimeout(function () {
             dispatch(checkUserAuthentication());
+            setLoadingToken(false);
         }, 3000);
         // eslint-disable-next-line
     }, []);
 
-    return <WrappedRoutes />;
+    return <WrappedRoutes loadingToken={loadingToken} />;
 }
 
 export default connect()(App);
