@@ -47,7 +47,7 @@ const SignIn = ({ dispatch }) => {
     });
     const [loading, setLoading] = useState(false);
 
-    const handleUserSignIn = async () => {
+    const handleUserSignIn = () => {
         setLoading(true);
 
         const body = {
@@ -62,10 +62,10 @@ const SignIn = ({ dispatch }) => {
         });
 
         userSignIn(body)
-            .then(async (response) => {
+            .then((response) => {
                 const apiRes = response.success;
                 ToastNotification(apiRes.message, 'success');
-                await dispatch(setUserToken(apiRes.token));
+                dispatch(setUserToken(apiRes.token));
             })
             .catch((error) => {
                 console.error(error.response.data.error);

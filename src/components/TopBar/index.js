@@ -13,8 +13,8 @@ const TopBar = ({ userToken, dispatch }) => {
         }
     };
 
-    const handleSignOut = async () => {
-        await dispatch(removeUserToken());
+    const handleSignOut = () => {
+        dispatch(removeUserToken());
         toggle();
     };
 
