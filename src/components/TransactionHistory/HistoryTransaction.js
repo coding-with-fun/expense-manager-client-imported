@@ -16,7 +16,9 @@ const HistoryTransaction = ({ transaction, index }) => {
                 <div className="details">
                     <div className="info w-100 mr-3">
                         <div className="date mb-3">
-                            {moment(transaction.date).format('DD MMMM YYYY')}
+                            {moment
+                                .unix(transaction.date)
+                                .format('DD MMMM YYYY')}
                         </div>
                         <div className="title">{transaction.title}</div>
                     </div>

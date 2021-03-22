@@ -61,7 +61,6 @@ const SignUp = () => {
 
         userSignUp(body)
             .then((response) => {
-                console.log(response);
                 setLoading(false);
             })
             .catch((error) => {

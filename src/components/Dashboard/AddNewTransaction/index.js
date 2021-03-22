@@ -69,6 +69,13 @@ const AddNewTransaction = ({ dispatch }) => {
     };
 
     const handleSaveDate = (data) => {
+        const tempData = moment(data).format('X');
+        console.log(
+            tempData,
+            moment(data).format(),
+            moment.unix(tempData).format(),
+            moment.unix(tempData).isValid()
+        );
         setNewTransactionData((userInput) => ({
             ...userInput,
             date: moment(data).format(),
@@ -76,7 +83,11 @@ const AddNewTransaction = ({ dispatch }) => {
     };
 
     const handleSaveData = () => {
-        dispatch(insertTransaction(newTransactionData));
+        const data = {
+            ...newTransactionData,
+            date: moment(newTransactionData.date).format('X'),
+        };
+        dispatch(insertTransaction(data));
         handleCloseModal();
     };
 
