@@ -8,8 +8,7 @@ import {
     Route,
     Switch,
 } from 'react-router-dom';
-import SignIn from '../components/AuthForm/SignIn';
-import SignUp from '../components/AuthForm/SignUp';
+import AuthForm from '../components/AuthForm/AuthForm';
 import Dashboard from '../components/Dashboard';
 import Guest from '../components/Guest';
 import TopBar from '../components/TopBar';
@@ -54,14 +53,18 @@ const WrappedRoutes = ({ userToken, loadingToken }) => {
                                 <Route
                                     exact
                                     path="/signin"
-                                    component={SignIn}
+                                    render={(props) => (
+                                        <AuthForm {...props} routeType={0} />
+                                    )}
                                 />
                             )}
                             {!userToken && (
                                 <Route
                                     exact
                                     path="/signup"
-                                    component={SignUp}
+                                    render={(props) => (
+                                        <AuthForm {...props} routeType={1} />
+                                    )}
                                 />
                             )}
                             <Redirect to="/" />

@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const SignIn = ({ dispatch }) => {
+const AuthForm = ({ dispatch, routeType }) => {
     const classes = useStyles();
     const history = useHistory();
 
@@ -106,7 +106,7 @@ const SignIn = ({ dispatch }) => {
         <Container component="main" maxWidth="xs">
             <div className={classes.paper}>
                 <Typography component="h1" variant="h3">
-                    Sign In
+                    {routeType === 0 ? 'Sign In' : 'Sign Up'}
                 </Typography>
                 <form className={classes.form} noValidate>
                     <TextField
@@ -157,18 +157,30 @@ const SignIn = ({ dispatch }) => {
                         className={classes.submit}
                         disabled={loading}
                         onClick={(e) => validateSignInData(e)}>
-                        {loading ? <CircularProgress size={24} /> : 'Sign In'}
+                        {loading ? (
+                            <CircularProgress size={24} />
+                        ) : routeType === 0 ? (
+                            'Sign In'
+                        ) : (
+                            'Sign Up'
+                        )}
                     </Button>
                     <Grid container className={'justify-content-center'}>
                         <Grid item className="d-flex">
                             <Typography variant="body1" className="mr-1">
-                                Don't have an account?
+                                {routeType === 0
+                                    ? "Don't have an account?"
+                                    : 'Already have an account?'}
                             </Typography>
                             <Link
                                 variant="body1"
-                                onClick={() => history.push('/signup')}
+                                onClick={() =>
+                                    history.push(
+                                        routeType === 0 ? '/signup' : '/signin'
+                                    )
+                                }
                                 className={classes.signUpLink}>
-                                {'Sign Up'}
+                                {routeType === 0 ? 'Sign Up' : 'Sign In'}
                             </Link>
                         </Grid>
                     </Grid>
@@ -178,4 +190,4 @@ const SignIn = ({ dispatch }) => {
     );
 };
 
-export default connect()(SignIn);
+export default connect()(AuthForm);
