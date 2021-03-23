@@ -50,7 +50,7 @@ const Dashboard = ({ dispatch }) => {
         // eslint-disable-next-line
     }, []);
 
-    return !loading ? (
+    return loading ? (
         <div className={classes.loader}>
             <CircularProgress />
         </div>
