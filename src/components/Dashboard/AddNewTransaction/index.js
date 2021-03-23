@@ -262,7 +262,7 @@ const AddNewTransaction = ({ dispatch }) => {
                                     aria-label="add"
                                     size="medium"
                                     className="save-entry"
-                                    onClick={!loading && handleSaveData}>
+                                    onClick={!loading ? handleSaveData : null}>
                                     {loading ? (
                                         <CircularProgress
                                             size={24}

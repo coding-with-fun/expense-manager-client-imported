@@ -14,6 +14,14 @@ const useStyles = makeStyles(() => ({
         justifyContent: 'center',
         alignItems: 'center',
     },
+    loader: {
+        position: 'absolute',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 'calc(100vh - 70px)',
+        width: '100vw',
+    },
 }));
 
 const Transactions = ({ transactions }) => {

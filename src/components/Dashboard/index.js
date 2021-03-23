@@ -1,10 +1,5 @@
 import { Container, makeStyles, Paper } from '@material-ui/core';
-import CircularProgress from '@material-ui/core/CircularProgress';
-import React, { useEffect, useState } from 'react';
-import { connect } from 'react-redux';
-import { setTransactions } from '../../actions/transactionsActions';
-import { getUserDetails } from '../../api/user.api';
-import ToastNotification from '../../shared/ToastNotification';
+import React from 'react';
 import AddNewTransaction from './AddNewTransaction';
 import IndividualBalance from './IndividualBalance';
 import TotalBalance from './TotalBalance';
@@ -30,35 +25,10 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const Dashboard = ({ dispatch }) => {
+const Dashboard = () => {
     const classes = useStyles();
-    const [loading, setLoading] = useState(true);
 
-    const handleGetUserDetails = () => {
-        getUserDetails()
-            .then(async (response) => {
-                const apiRes = response.success;
-                ToastNotification(apiRes.message, 'success');
-                await dispatch(setTransactions(apiRes.user.transactionList));
-                setLoading(false);
-            })
-            .catch((error) => {
-                console.error(error.response.data.error);
-                ToastNotification(error.response.data.error.message);
-            });
-    };
-
-    useEffect(() => {
-        setLoading(true);
-        handleGetUserDetails();
-        // eslint-disable-next-line
-    }, []);
-
-    return loading ? (
-        <div className={classes.loader}>
-            <CircularProgress />
-        </div>
-    ) : (
+    return (
         <Container component="main" maxWidth="xs">
             <Paper elevation={0} className={classes.paper}>
                 <TotalBalance />
@@ -70,4 +40,4 @@ const Dashboard = ({ dispatch }) => {
     );
 };
 
-export default connect()(Dashboard);
+export default Dashboard;

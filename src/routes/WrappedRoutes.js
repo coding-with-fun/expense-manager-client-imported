@@ -9,10 +9,9 @@ import {
     Switch,
 } from 'react-router-dom';
 import AuthForm from '../components/AuthForm/AuthForm';
-import Dashboard from '../components/Dashboard';
 import Guest from '../components/Guest';
 import TopBar from '../components/TopBar';
-import Transactions from '../components/Transactions';
+import AuthenticatedRoutes from './AuthenticatedRoutes';
 
 const useStyles = makeStyles(() => ({
     loader: {
@@ -35,21 +34,11 @@ const WrappedRoutes = ({ userToken, loadingToken }) => {
                     <TopBar />
 
                     <div className="body-content">
-                        <Switch>
-                            {!userToken && (
+                        {userToken ? (
+                            <AuthenticatedRoutes />
+                        ) : (
+                            <Switch>
                                 <Route exact path="/" component={Guest} />
-                            )}
-                            {userToken && (
-                                <Route exact path="/" component={Dashboard} />
-                            )}
-                            {userToken && (
-                                <Route
-                                    exact
-                                    path="/transactions"
-                                    component={Transactions}
-                                />
-                            )}
-                            {!userToken && (
                                 <Route
                                     exact
                                     path="/signin"
@@ -57,8 +46,6 @@ const WrappedRoutes = ({ userToken, loadingToken }) => {
                                         <AuthForm {...props} routeType={0} />
                                     )}
                                 />
-                            )}
-                            {!userToken && (
                                 <Route
                                     exact
                                     path="/signup"
@@ -66,9 +53,9 @@ const WrappedRoutes = ({ userToken, loadingToken }) => {
                                         <AuthForm {...props} routeType={1} />
                                     )}
                                 />
-                            )}
-                            <Redirect to="/" />
-                        </Switch>
+                                <Redirect to="/" />
+                            </Switch>
+                        )}
                     </div>
                 </>
             ) : (

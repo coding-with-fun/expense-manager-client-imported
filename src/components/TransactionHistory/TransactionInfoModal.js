@@ -31,10 +31,12 @@ import {
     MuiPickersUtilsProvider,
     TimePicker,
 } from '@material-ui/pickers';
+import moment from 'moment';
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { deleteTransaction } from '../../actions/transactionsActions';
-import moment from 'moment';
+import { setTransactions } from '../../actions/transactionsActions';
+import { deleteTransaction } from '../../api/transaction.api';
+import ToastNotification from '../../shared/ToastNotification';
 
 const useStyles = makeStyles((theme) => ({
     modal: {
@@ -98,7 +100,16 @@ const TransactionInfoModal = ({
     };
 
     const handleDeleteEntry = () => {
-        dispatch(deleteTransaction(index));
+        console.log(transaction._id);
+        deleteTransaction(transaction._id)
+            .then(async (response) => {
+                const apiRes = response.success;
+                await dispatch(setTransactions(apiRes.transactionList));
+            })
+            .catch((error) => {
+                console.error(error.response.data.error);
+                ToastNotification(error.response.data.error.message);
+            });
     };
 
     const handleCloseModal = () => {
