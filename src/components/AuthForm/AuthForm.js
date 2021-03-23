@@ -8,13 +8,18 @@ import {
     Typography,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { useHistory } from 'react-router';
+import validator from 'validator';
 import { setUserToken } from '../../actions/authActions';
-import { userSignIn } from '../../api/auth.api';
+import { authenticateUser } from '../../api/auth.api';
 import ToastNotification from '../../shared/ToastNotification';
-import { ValidatePassword, ValidateUsername } from '../../shared/ValidateData';
+import {
+    RemoveWhiteSpace,
+    ValidateAlphabet,
+    ComparePasswords,
+} from '../../shared/ValidateData';
 
 const useStyles = makeStyles((theme) => ({
     paper: {
@@ -30,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     submit: {
         margin: theme.spacing(4, 0, 2),
     },
-    signUpLink: {
+    routeLink: {
         cursor: 'pointer',
     },
 }));
@@ -39,29 +44,79 @@ const AuthForm = ({ dispatch, routeType }) => {
     const classes = useStyles();
     const history = useHistory();
 
-    const [userInput, setUserInput] = useState({
+    const initialState = {
+        name: '',
+        nameError: false,
+        nameMessage: 'Name should have at least one alphabet.',
         username: '',
         usernameError: false,
+        usernameMessage: 'Username should have at least one alphabet.',
+        email: '',
+        emailError: false,
+        emailMessage: 'Must be a valid email address.',
         password: '',
         passwordError: false,
-    });
+        passwordMessage: 'Password should have at least one alphabet.',
+        confirmPassword: '',
+        confirmPasswordError: false,
+        confirmPasswordMessage: 'Password should have at least one alphabet.',
+    };
+
+    const InputField = (label, name) => {
+        return (
+            <TextField
+                margin="normal"
+                required
+                fullWidth
+                autoFocus={
+                    routeType === 0
+                        ? name === 'username'
+                        : routeType === 1 && name === 'name'
+                }
+                label={label}
+                name={name}
+                disabled={loading}
+                type={
+                    ['password', 'confirmPassword'].includes(name)
+                        ? 'password'
+                        : 'text'
+                }
+                autoComplete={name}
+                value={userInput[`${name}`]}
+                onChange={(e) => handleInput(e)}
+                error={userInput[`${name}Error`]}
+                helperText={userInput[`${name}Message`]}
+            />
+        );
+    };
+
+    const [userInput, setUserInput] = useState(initialState);
     const [loading, setLoading] = useState(false);
 
-    const handleUserSignIn = () => {
+    useEffect(() => {
+        setUserInput(initialState);
+        // eslint-disable-next-line
+    }, [routeType]);
+
+    const handleAuthenticateUser = (data) => {
         setLoading(true);
 
-        const body = {
-            userName: userInput.username,
-            password: userInput.password,
+        let body = {
+            userName: data.username,
+            password: data.password,
         };
-        setUserInput({
-            username: '',
-            usernameError: false,
-            password: '',
-            passwordError: false,
-        });
 
-        userSignIn(body)
+        if (routeType === 1) {
+            body = {
+                ...body,
+                name: data.name,
+                email: data.email,
+                confirmPassword: data.confirmPassword,
+            };
+        }
+        setUserInput(initialState);
+
+        authenticateUser(body, routeType)
             .then((response) => {
                 const apiRes = response.success;
                 ToastNotification(apiRes.message, 'success');
@@ -74,30 +129,92 @@ const AuthForm = ({ dispatch, routeType }) => {
             });
     };
 
-    const validateSignInData = (e) => {
+    const validateUserData = (e) => {
         e.preventDefault();
-        if (!ValidateUsername(userInput)) {
+        const data = { ...userInput };
+
+        data.name = RemoveWhiteSpace(data.name);
+        data.username = RemoveWhiteSpace(data.username);
+        data.email = RemoveWhiteSpace(data.email);
+        data.password = RemoveWhiteSpace(data.password);
+        data.confirmPassword = RemoveWhiteSpace(data.confirmPassword);
+
+        if (routeType === 1 && !ValidateAlphabet(data.name)) {
             setUserInput((userInput) => ({
                 ...userInput,
+                nameMessage: 'Please enter a valid name.',
+                nameError: true,
+            }));
+            return;
+        }
+
+        if (!ValidateAlphabet(data.username)) {
+            setUserInput((userInput) => ({
+                ...userInput,
+                usernameMessage: 'Please enter a valid username.',
                 usernameError: true,
             }));
             return;
         }
-        if (!ValidatePassword(userInput)) {
+
+        if (routeType === 1 && !validator.isEmail(data.email)) {
             setUserInput((userInput) => ({
                 ...userInput,
+                emailMessage: 'Please enter a valid email address.',
+                emailError: true,
+            }));
+            return;
+        }
+
+        if (!ValidateAlphabet(data.password)) {
+            setUserInput((userInput) => ({
+                ...userInput,
+                passwordMessage: 'Please enter a valid password.',
                 passwordError: true,
             }));
             return;
         }
 
-        handleUserSignIn();
+        if (routeType === 1 && !ValidateAlphabet(data.confirmPassword)) {
+            setUserInput((userInput) => ({
+                ...userInput,
+                confirmPasswordMessage: 'Please enter a valid password.',
+                confirmPasswordError: true,
+            }));
+            return;
+        }
+
+        if (
+            routeType === 1 &&
+            !ComparePasswords(data.password, data.confirmPassword)
+        ) {
+            setUserInput((userInput) => ({
+                ...userInput,
+                passwordMessage: 'Passwords does not match.',
+                passwordError: true,
+                confirmPasswordMessage: 'Passwords does not match.',
+                confirmPasswordError: true,
+            }));
+            return;
+        }
+
+        if (
+            !userInput.nameError &&
+            !userInput.usernameError &&
+            !userInput.emailError &&
+            !userInput.passwordError &&
+            !userInput.confirmPasswordError
+        )
+            handleAuthenticateUser(data);
     };
 
     const handleInput = (e) => {
         setUserInput((userInput) => ({
             ...userInput,
-            [`${e.target.name}Error`]: !e.target.value.trim(),
+            [`${e.target.name}Error`]:
+                e.target.name === 'email'
+                    ? !validator.isEmail(e.target.value)
+                    : !ValidateAlphabet(e.target.value),
             [e.target.name]: e.target.value,
         }));
     };
@@ -109,42 +226,12 @@ const AuthForm = ({ dispatch, routeType }) => {
                     {routeType === 0 ? 'Sign In' : 'Sign Up'}
                 </Typography>
                 <form className={classes.form} noValidate>
-                    <TextField
-                        margin="normal"
-                        required
-                        fullWidth
-                        label="Username"
-                        name="username"
-                        disabled={loading}
-                        autoComplete="username"
-                        value={userInput.username}
-                        onChange={(e) => handleInput(e)}
-                        autoFocus
-                        error={userInput.usernameError}
-                        helperText={
-                            userInput.usernameError
-                                ? 'Please enter a valid username.'
-                                : 'Username should have at least one alphabet.'
-                        }
-                    />
-                    <TextField
-                        margin="normal"
-                        required
-                        fullWidth
-                        label="Password"
-                        name="password"
-                        disabled={loading}
-                        type="password"
-                        autoComplete="current-password"
-                        value={userInput.password}
-                        onChange={(e) => handleInput(e)}
-                        error={userInput.passwordError}
-                        helperText={
-                            userInput.passwordError
-                                ? 'Please enter a valid password.'
-                                : 'Password should have at least one alphabet.'
-                        }
-                    />
+                    {routeType === 1 && InputField('Name', 'name')}
+                    {InputField('Username', 'username')}
+                    {routeType === 1 && InputField('Email', 'email')}
+                    {InputField('Password', 'password')}
+                    {routeType === 1 &&
+                        InputField('Confirm Password', 'confirmPassword')}
                     <Button
                         type="submit"
                         fullWidth
@@ -156,7 +243,7 @@ const AuthForm = ({ dispatch, routeType }) => {
                         }
                         className={classes.submit}
                         disabled={loading}
-                        onClick={(e) => validateSignInData(e)}>
+                        onClick={(e) => validateUserData(e)}>
                         {loading ? (
                             <CircularProgress size={24} />
                         ) : routeType === 0 ? (
@@ -179,7 +266,7 @@ const AuthForm = ({ dispatch, routeType }) => {
                                         routeType === 0 ? '/signup' : '/signin'
                                     )
                                 }
-                                className={classes.signUpLink}>
+                                className={classes.routeLink}>
                                 {routeType === 0 ? 'Sign Up' : 'Sign In'}
                             </Link>
                         </Grid>
