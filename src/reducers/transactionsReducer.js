@@ -7,6 +7,12 @@ const transactionsReducer = (state = initialState, action) => {
         case 'GET_ALL_TRANSACTIONS':
             return state;
 
+        case 'SET_TRANSACTIONS':
+            return {
+                ...state,
+                transactions: [...action.payload.data],
+            };
+
         case 'INSERT_TRANSACTION': {
             return {
                 ...state,

@@ -4,6 +4,15 @@ export const getAllTransactions = () => {
     };
 };
 
+export const setTransactions = (data) => {
+    return {
+        type: 'SET_TRANSACTIONS',
+        payload: {
+            data,
+        },
+    };
+};
+
 export const insertTransaction = (entry) => {
     return {
         type: 'INSERT_TRANSACTION',

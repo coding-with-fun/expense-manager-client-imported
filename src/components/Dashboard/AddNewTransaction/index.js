@@ -24,10 +24,12 @@ import {
     MuiPickersUtilsProvider,
     TimePicker,
 } from '@material-ui/pickers';
+import moment from 'moment';
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import { insertTransaction } from '../../../actions/transactionsActions';
-import moment from 'moment';
+import { setTransactions } from '../../../actions/transactionsActions';
+import { addTransaction } from '../../../api/transaction.api';
+import ToastNotification from '../../../shared/ToastNotification';
 
 const useStyles = makeStyles((theme) => ({
     modal: {
@@ -56,6 +58,7 @@ const AddNewTransaction = ({ dispatch }) => {
         amount: '',
         date: moment().format(),
     });
+    const [loading, setLoading] = useState(false);
 
     const classes = useStyles();
 
@@ -82,12 +85,23 @@ const AddNewTransaction = ({ dispatch }) => {
         }));
     };
 
-    const handleSaveData = () => {
+    const handleSaveData = async () => {
+        setLoading(true);
         const data = {
             ...newTransactionData,
             date: moment(newTransactionData.date).format('X'),
         };
-        dispatch(insertTransaction(data));
+        addTransaction(data)
+            .then((response) => {
+                const apiRes = response.success;
+                ToastNotification(apiRes.message, 'success');
+                dispatch(setTransactions(data));
+            })
+            .catch((error) => {
+                console.error(error.response.data.error);
+                ToastNotification(error.response.data.error.message);
+                setLoading(false);
+            });
         handleCloseModal();
     };
 
