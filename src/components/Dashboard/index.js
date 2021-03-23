@@ -32,21 +32,25 @@ const useStyles = makeStyles((theme) => ({
 
 const Dashboard = ({ dispatch }) => {
     const classes = useStyles();
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        setLoading(true);
+    const handleGetUserDetails = () => {
         getUserDetails()
-            .then((response) => {
+            .then(async (response) => {
                 const apiRes = response.success;
                 ToastNotification(apiRes.message, 'success');
-                dispatch(setTransactions(apiRes.user.transactionList));
+                await dispatch(setTransactions(apiRes.user.transactionList));
                 setLoading(false);
             })
             .catch((error) => {
                 console.error(error.response.data.error);
                 ToastNotification(error.response.data.error.message);
             });
+    };
+
+    useEffect(() => {
+        setLoading(true);
+        handleGetUserDetails();
         // eslint-disable-next-line
     }, []);
 

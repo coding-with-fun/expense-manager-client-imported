@@ -13,6 +13,7 @@
     .save-entry,
     .edit-entry {
         background: var(--success);
+        min-width: 110px !important;
         color: #fff;
     }
 

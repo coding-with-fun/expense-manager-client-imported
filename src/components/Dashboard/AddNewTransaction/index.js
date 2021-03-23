@@ -1,6 +1,7 @@
 import DateFnsUtils from '@date-io/date-fns';
 import {
     Backdrop,
+    CircularProgress,
     Fab,
     Fade,
     FormControl,
@@ -85,7 +86,7 @@ const AddNewTransaction = ({ dispatch }) => {
         }));
     };
 
-    const handleSaveData = async () => {
+    const handleSaveData = () => {
         setLoading(true);
         const data = {
             ...newTransactionData,
@@ -95,14 +96,15 @@ const AddNewTransaction = ({ dispatch }) => {
             .then((response) => {
                 const apiRes = response.success;
                 ToastNotification(apiRes.message, 'success');
-                dispatch(setTransactions(data));
+                dispatch(setTransactions(apiRes.transactionList));
+                setLoading(false);
+                handleCloseModal();
             })
             .catch((error) => {
                 console.error(error.response.data.error);
                 ToastNotification(error.response.data.error.message);
                 setLoading(false);
             });
-        handleCloseModal();
     };
 
     const handleCloseModal = () => {
@@ -249,6 +251,7 @@ const AddNewTransaction = ({ dispatch }) => {
                                     variant="extended"
                                     aria-label="cancel"
                                     size="medium"
+                                    disabled={loading}
                                     className="cancel-entry"
                                     onClick={handleCloseModal}>
                                     <CancelIcon className="mr-3" />
@@ -259,9 +262,18 @@ const AddNewTransaction = ({ dispatch }) => {
                                     aria-label="add"
                                     size="medium"
                                     className="save-entry"
-                                    onClick={handleSaveData}>
-                                    <SaveIcon className="mr-3" />
-                                    Save
+                                    onClick={!loading && handleSaveData}>
+                                    {loading ? (
+                                        <CircularProgress
+                                            size={24}
+                                            color="#fff"
+                                        />
+                                    ) : (
+                                        <>
+                                            <SaveIcon className="mr-3" />
+                                            Save
+                                        </>
+                                    )}
                                 </Fab>
                             </div>
                         </div>
