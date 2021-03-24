@@ -115,17 +115,20 @@ const TransactionModal = ({
 
         setNewTransactionData((userInput) => ({
             ...userInput,
-            [inputName]: event.target.value,
+            [inputName]:
+                inputName === 'amount' && event.target.value
+                    ? parseInt(event.target.value)
+                    : event.target.value,
         }));
 
         setNewTransactionErrorData((newTransactionErrorData) => ({
             ...newTransactionErrorData,
-            [`${event.target.name}Error`]: event.target.value
+            [`${inputName}Error`]: event.target.value
                 ? !RemoveWhiteSpace(event.target.value)
                 : false,
-            [`${event.target.name}Message`]:
+            [`${inputName}Message`]:
                 event.target.value && !RemoveWhiteSpace(event.target.value)
-                    ? `Please enter a ${event.target.name}`
+                    ? `Please enter a ${inputName}`
                     : '',
         }));
     };
@@ -143,12 +146,14 @@ const TransactionModal = ({
             date: moment(newTransactionData.date).format('X'),
         };
 
-        for (let data in newTransactionData) {
-            if (!RemoveWhiteSpace(newTransactionData[`${data}`])) {
+        console.log(data);
+
+        for (let field in data) {
+            if (!RemoveWhiteSpace(data[`${field}`])) {
                 setNewTransactionErrorData((newTransactionErrorData) => ({
                     ...newTransactionErrorData,
-                    [`${data}Message`]: `Please enter a ${data}`,
-                    [`${data}Error`]: true,
+                    [`${field}Message`]: `Please enter a ${field}`,
+                    [`${field}Error`]: true,
                 }));
                 return;
             }

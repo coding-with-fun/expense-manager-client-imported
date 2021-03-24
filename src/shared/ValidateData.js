@@ -3,7 +3,8 @@ import validator from 'validator';
 const oneAlphabetRegex = /\w*[a-zA-Z]\w*/i;
 
 export const RemoveWhiteSpace = (data) => {
-    return data.replace(/\s+/g, ' ').trim();
+    if (typeof data !== 'number') return data.replace(/\s+/g, ' ').trim();
+    return data;
 };
 
 export const ValidateAlphabet = (data) => {
