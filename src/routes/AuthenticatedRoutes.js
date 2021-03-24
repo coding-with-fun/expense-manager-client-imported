@@ -27,10 +27,10 @@ const AuthenticatedRoutes = ({ dispatch }) => {
     const handleGetUserDetails = () => {
         setLoading(true);
         getUserDetails()
-            .then(async (response) => {
+            .then((response) => {
                 const apiRes = response.success;
                 ToastNotification(apiRes.message, 'success');
-                await dispatch(setTransactions(apiRes.user.transactionList));
+                dispatch(setTransactions(apiRes.user.transactionList));
                 setLoading(false);
             })
             .catch((error) => {

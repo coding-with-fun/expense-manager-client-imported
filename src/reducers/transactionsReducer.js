@@ -8,6 +8,9 @@ const transactionsReducer = (state = initialState, action) => {
             return state;
 
         case 'SET_TRANSACTIONS':
+            action.payload.data.sort(
+                (a, b) => parseFloat(a.date) - parseFloat(b.date)
+            );
             return {
                 ...state,
                 transactions: [...action.payload.data],

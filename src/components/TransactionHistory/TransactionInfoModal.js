@@ -135,10 +135,11 @@ const TransactionInfoModal = ({
         setLoadingDeleteEntry(true);
         setIsDeleteAlertOpen(false);
         deleteTransaction(transaction._id)
-            .then(async (response) => {
+            .then((response) => {
                 const apiRes = response.success;
-                await dispatch(setTransactions(apiRes.transactionList));
                 setLoadingDeleteEntry(false);
+                setIsModalOpen(false);
+                dispatch(setTransactions(apiRes.transactionList));
             })
             .catch((error) => {
                 console.error(error.response.data.error);
