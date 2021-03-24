@@ -66,14 +66,14 @@ const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
 });
 
-const TransactionInfoModal = ({
+const TransactionModal = ({
     isModalOpen,
     setIsModalOpen,
     transaction,
     type,
     dispatch,
 }) => {
-    const [newTransactionData, setNewTransactionData] = useState({
+    const initialState = {
         title: type === 0 ? '' : transaction.title,
         description: type === 0 ? '' : transaction.description,
         category: type === 0 ? 'expense' : transaction.category,
@@ -82,7 +82,9 @@ const TransactionInfoModal = ({
             type === 0
                 ? moment().format()
                 : moment.unix(transaction.date).format(),
-    });
+    };
+
+    const [newTransactionData, setNewTransactionData] = useState(initialState);
     const [isDeleteAlertOpen, setIsDeleteAlertOpen] = useState(false);
     const [editEntry, setEditEntry] = useState(false);
     const [loadingDeleteEntry, setLoadingDeleteEntry] = useState(false);
@@ -160,16 +162,7 @@ const TransactionInfoModal = ({
     };
 
     const handleCloseModal = () => {
-        setNewTransactionData({
-            title: type === 0 ? '' : transaction.title,
-            description: type === 0 ? '' : transaction.description,
-            category: type === 0 ? '' : transaction.category,
-            amount: type === 0 ? '' : transaction.amount,
-            date:
-                type === 0
-                    ? moment().format()
-                    : moment.unix(transaction.date).format(),
-        });
+        setNewTransactionData(initialState);
         setEditEntry(false);
         setIsDeleteAlertOpen(false);
         setIsModalOpen(false);
@@ -422,4 +415,4 @@ const TransactionInfoModal = ({
     );
 };
 
-export default connect()(TransactionInfoModal);
+export default connect()(TransactionModal);

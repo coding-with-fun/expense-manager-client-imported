@@ -1,6 +1,6 @@
 import { Paper } from '@material-ui/core';
 import React, { useState } from 'react';
-import TransactionInfoModal from './TransactionInfoModal';
+import TransactionModal from '../TransactionModal';
 import moment from 'moment';
 
 const HistoryTransaction = ({ transaction }) => {
@@ -28,7 +28,7 @@ const HistoryTransaction = ({ transaction }) => {
             </div>
 
             {isModalOpen && (
-                <TransactionInfoModal
+                <TransactionModal
                     isModalOpen={isModalOpen}
                     setIsModalOpen={setIsModalOpen}
                     transaction={transaction}

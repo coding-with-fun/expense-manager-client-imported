@@ -2,7 +2,7 @@ import { Fab } from '@material-ui/core';
 import { Add as AddIcon } from '@material-ui/icons';
 import React, { useState } from 'react';
 import { connect } from 'react-redux';
-import TransactionInfoModal from '../../TransactionHistory/TransactionInfoModal';
+import TransactionModal from '../../TransactionModal';
 
 const AddNewTransaction = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -18,7 +18,7 @@ const AddNewTransaction = () => {
             </Fab>
 
             {isModalOpen && (
-                <TransactionInfoModal
+                <TransactionModal
                     isModalOpen={isModalOpen}
                     setIsModalOpen={setIsModalOpen}
                     type={0}
