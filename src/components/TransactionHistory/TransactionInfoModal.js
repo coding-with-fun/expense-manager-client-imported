@@ -1,8 +1,8 @@
 import DateFnsUtils from '@date-io/date-fns';
 import {
     Backdrop,
-    CircularProgress,
     Button,
+    CircularProgress,
     Dialog,
     DialogActions,
     DialogContent,
@@ -26,6 +26,7 @@ import {
     Delete as DeleteIcon,
     Edit as EditIcon,
     Save as SaveIcon,
+    Cancel as CancelIcon,
 } from '@material-ui/icons';
 import {
     DatePicker,
@@ -33,10 +34,11 @@ import {
     TimePicker,
 } from '@material-ui/pickers';
 import moment from 'moment';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { connect } from 'react-redux';
 import { setTransactions } from '../../actions/transactionsActions';
 import {
+    addTransaction,
     deleteTransaction,
     updateTransaction,
 } from '../../api/transaction.api';
@@ -68,14 +70,18 @@ const TransactionInfoModal = ({
     isModalOpen,
     setIsModalOpen,
     transaction,
+    type,
     dispatch,
 }) => {
     const [newTransactionData, setNewTransactionData] = useState({
-        title: '',
-        description: '',
-        category: 'expense',
-        amount: '',
-        date: moment().format(),
+        title: type === 0 ? '' : transaction.title,
+        description: type === 0 ? '' : transaction.description,
+        category: type === 0 ? 'expense' : transaction.category,
+        amount: type === 0 ? '' : transaction.amount,
+        date:
+            type === 0
+                ? moment().format()
+                : moment.unix(transaction.date).format(),
     });
     const [isDeleteAlertOpen, setIsDeleteAlertOpen] = useState(false);
     const [editEntry, setEditEntry] = useState(false);
@@ -83,16 +89,6 @@ const TransactionInfoModal = ({
     const [loadingSaveEntry, setLoadingSaveEntry] = useState(false);
 
     const classes = useStyles();
-
-    useEffect(() => {
-        setNewTransactionData({
-            title: transaction.title,
-            description: transaction.description,
-            category: transaction.category,
-            amount: transaction.amount,
-            date: moment.unix(transaction.date).format(),
-        });
-    }, [transaction]);
 
     const handleSaveInput = (event) => {
         const inputName = event.target.name;
@@ -116,19 +112,35 @@ const TransactionInfoModal = ({
             ...newTransactionData,
             date: moment(newTransactionData.date).format('X'),
         };
-        updateTransaction(data, transaction._id)
-            .then((response) => {
-                const apiRes = response.success;
-                ToastNotification(apiRes.message, 'success');
-                dispatch(setTransactions(apiRes.transactionList));
-                setLoadingSaveEntry(false);
-                handleCloseModal();
-            })
-            .catch((error) => {
-                console.error(error.response.data.error);
-                ToastNotification(error.response.data.error.message);
-                setLoadingSaveEntry(false);
-            });
+        if (type === 0) {
+            addTransaction(data)
+                .then((response) => {
+                    const apiRes = response.success;
+                    ToastNotification(apiRes.message, 'success');
+                    dispatch(setTransactions(apiRes.transactionList));
+                    setLoadingSaveEntry(false);
+                    handleCloseModal();
+                })
+                .catch((error) => {
+                    console.error(error.response.data.error);
+                    ToastNotification(error.response.data.error.message);
+                    setLoadingSaveEntry(false);
+                });
+        } else {
+            updateTransaction(data, transaction._id)
+                .then((response) => {
+                    const apiRes = response.success;
+                    ToastNotification(apiRes.message, 'success');
+                    dispatch(setTransactions(apiRes.transactionList));
+                    setLoadingSaveEntry(false);
+                    handleCloseModal();
+                })
+                .catch((error) => {
+                    console.error(error.response.data.error);
+                    ToastNotification(error.response.data.error.message);
+                    setLoadingSaveEntry(false);
+                });
+        }
     };
 
     const handleDeleteEntry = () => {
@@ -149,11 +161,14 @@ const TransactionInfoModal = ({
 
     const handleCloseModal = () => {
         setNewTransactionData({
-            title: transaction.title,
-            description: transaction.description,
-            category: transaction.category,
-            amount: transaction.amount,
-            date: moment.unix(transaction.date).format(),
+            title: type === 0 ? '' : transaction.title,
+            description: type === 0 ? '' : transaction.description,
+            category: type === 0 ? '' : transaction.category,
+            amount: type === 0 ? '' : transaction.amount,
+            date:
+                type === 0
+                    ? moment().format()
+                    : moment.unix(transaction.date).format(),
         });
         setEditEntry(false);
         setIsDeleteAlertOpen(false);
@@ -189,7 +204,7 @@ const TransactionInfoModal = ({
                         variant="outlined"
                         margin="dense"
                         fullWidth
-                        disabled={!editEntry}
+                        disabled={!editEntry && type !== 0}
                     />
 
                     <TextField
@@ -203,15 +218,14 @@ const TransactionInfoModal = ({
                         variant="outlined"
                         margin="dense"
                         fullWidth
-                        disabled={!editEntry}
+                        disabled={!editEntry && type !== 0}
                     />
 
                     <div className="d-flex">
                         <FormControl
                             variant="outlined"
                             margin="dense"
-                            className="w-50 flex-fill mr-3"
-                            disabled={!editEntry}>
+                            className="w-50 flex-fill mr-3">
                             <InputLabel htmlFor="category">Category</InputLabel>
                             <Select
                                 labelId="category"
@@ -219,7 +233,8 @@ const TransactionInfoModal = ({
                                 value={newTransactionData.category}
                                 onChange={handleSaveInput}
                                 label="Category"
-                                name="category">
+                                name="category"
+                                disabled={!editEntry && type !== 0}>
                                 <MenuItem value={'expense'}>Expense</MenuItem>
                                 <MenuItem value={'income'}>Income</MenuItem>
                             </Select>
@@ -228,7 +243,7 @@ const TransactionInfoModal = ({
                         <FormControl
                             margin="dense"
                             variant="outlined"
-                            disabled={!editEntry}>
+                            disabled={!editEntry && type !== 0}>
                             <InputLabel htmlFor="amount">Amount</InputLabel>
                             <OutlinedInput
                                 id="amount"
@@ -261,7 +276,7 @@ const TransactionInfoModal = ({
                                 onChange={handleSaveDate}
                                 animateYearScrolling
                                 format="dd/MM/yyyy"
-                                disabled={!editEntry}
+                                disabled={!editEntry && type !== 0}
                             />
                             <TimePicker
                                 margin="dense"
@@ -273,39 +288,60 @@ const TransactionInfoModal = ({
                                 value={newTransactionData.date}
                                 autoOk
                                 onChange={handleSaveDate}
-                                disabled={!editEntry}
+                                disabled={!editEntry && type !== 0}
                             />
                         </MuiPickersUtilsProvider>
                     </div>
 
                     <div className="d-flex justify-content-around mt-4">
-                        <Fab
-                            variant="extended"
-                            aria-label="delete"
-                            size="medium"
-                            className="delete-entry"
-                            onClick={() => setIsDeleteAlertOpen(true)}>
-                            {loadingDeleteEntry ? (
-                                <CircularProgress
-                                    size={24}
-                                    style={{
-                                        color: '#fff',
-                                    }}
-                                />
-                            ) : (
-                                <>
-                                    <DeleteIcon className="mr-3" />
-                                    Delete
-                                </>
-                            )}
-                        </Fab>
-                        {editEntry && (
+                        {type === 0 && (
+                            <Fab
+                                variant="extended"
+                                aria-label="cancel"
+                                size="medium"
+                                disabled={
+                                    loadingDeleteEntry || loadingSaveEntry
+                                }
+                                className="cancel-entry"
+                                onClick={handleCloseModal}>
+                                <CancelIcon className="mr-3" />
+                                Cancel
+                            </Fab>
+                        )}
+                        {type !== 0 && (
+                            <Fab
+                                variant="extended"
+                                aria-label="delete"
+                                size="medium"
+                                className="delete-entry"
+                                disabled={
+                                    loadingDeleteEntry || loadingSaveEntry
+                                }
+                                onClick={() => setIsDeleteAlertOpen(true)}>
+                                {loadingDeleteEntry ? (
+                                    <CircularProgress
+                                        size={24}
+                                        style={{
+                                            color: '#fff',
+                                        }}
+                                    />
+                                ) : (
+                                    <>
+                                        <DeleteIcon className="mr-3" />
+                                        Delete
+                                    </>
+                                )}
+                            </Fab>
+                        )}
+                        {(editEntry || type === 0) && (
                             <Fab
                                 variant="extended"
                                 aria-label="add"
                                 size="medium"
                                 className="save-entry"
-                                disabled={loadingDeleteEntry}
+                                disabled={
+                                    loadingDeleteEntry || loadingSaveEntry
+                                }
                                 onClick={handleSaveData}>
                                 {loadingSaveEntry ? (
                                     <CircularProgress
@@ -322,13 +358,15 @@ const TransactionInfoModal = ({
                                 )}
                             </Fab>
                         )}
-                        {!editEntry && (
+                        {!editEntry && type !== 0 && (
                             <Fab
                                 variant="extended"
                                 aria-label="add"
                                 size="medium"
                                 className="edit-entry"
-                                disabled={loadingDeleteEntry}
+                                disabled={
+                                    loadingDeleteEntry || loadingSaveEntry
+                                }
                                 onClick={() => setEditEntry(true)}>
                                 <EditIcon className="mr-3" />
                                 Edit
