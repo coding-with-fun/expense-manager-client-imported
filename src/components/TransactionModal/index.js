@@ -11,6 +11,7 @@ import {
     Fab,
     Fade,
     FormControl,
+    FormHelperText,
     InputAdornment,
     InputLabel,
     MenuItem,
@@ -43,6 +44,7 @@ import {
     updateTransaction,
 } from '../../api/transaction.api';
 import ToastNotification from '../../shared/ToastNotification';
+import { RemoveWhiteSpace } from '../../shared/ValidateData';
 
 const useStyles = makeStyles((theme) => ({
     modal: {
@@ -84,7 +86,23 @@ const TransactionModal = ({
                 : moment.unix(transaction.date).format(),
     };
 
+    const initialErrorState = {
+        titleMessage: '',
+        titleError: false,
+        descriptionMessage: '',
+        descriptionError: false,
+        categoryMessage: '',
+        categoryError: false,
+        amountMessage: '',
+        amountError: false,
+        dateMessage: '',
+        dateError: false,
+    };
+
     const [newTransactionData, setNewTransactionData] = useState(initialState);
+    const [newTransactionErrorData, setNewTransactionErrorData] = useState(
+        initialErrorState
+    );
     const [isDeleteAlertOpen, setIsDeleteAlertOpen] = useState(false);
     const [editEntry, setEditEntry] = useState(false);
     const [loadingDeleteEntry, setLoadingDeleteEntry] = useState(false);
@@ -99,6 +117,17 @@ const TransactionModal = ({
             ...userInput,
             [inputName]: event.target.value,
         }));
+
+        setNewTransactionErrorData((newTransactionErrorData) => ({
+            ...newTransactionErrorData,
+            [`${event.target.name}Error`]: event.target.value
+                ? !RemoveWhiteSpace(event.target.value)
+                : false,
+            [`${event.target.name}Message`]:
+                event.target.value && !RemoveWhiteSpace(event.target.value)
+                    ? `Please enter a ${event.target.name}`
+                    : '',
+        }));
     };
 
     const handleSaveDate = (data) => {
@@ -108,12 +137,28 @@ const TransactionModal = ({
         }));
     };
 
-    const handleSaveData = () => {
-        setLoadingSaveEntry(true);
+    const validateData = () => {
         const data = {
             ...newTransactionData,
             date: moment(newTransactionData.date).format('X'),
         };
+
+        for (let data in newTransactionData) {
+            if (!RemoveWhiteSpace(newTransactionData[`${data}`])) {
+                setNewTransactionErrorData((newTransactionErrorData) => ({
+                    ...newTransactionErrorData,
+                    [`${data}Message`]: `Please enter a ${data}`,
+                    [`${data}Error`]: true,
+                }));
+                return;
+            }
+        }
+
+        handleSaveData(data);
+    };
+
+    const handleSaveData = (data) => {
+        setLoadingSaveEntry(true);
         if (type === 0) {
             addTransaction(data)
                 .then((response) => {
@@ -164,6 +209,7 @@ const TransactionModal = ({
 
     const handleCloseModal = () => {
         setNewTransactionData(initialState);
+        setNewTransactionErrorData(initialErrorState);
         setEditEntry(false);
         setIsDeleteAlertOpen(false);
         setIsModalOpen(false);
@@ -198,9 +244,12 @@ const TransactionModal = ({
                         variant="outlined"
                         margin="dense"
                         fullWidth
+                        autoFocus
                         disabled={
                             (type !== 0 && !editEntry) || loadingSaveEntry
                         }
+                        error={newTransactionErrorData.titleError}
+                        helperText={newTransactionErrorData.titleMessage}
                     />
 
                     <TextField
@@ -217,13 +266,16 @@ const TransactionModal = ({
                         disabled={
                             (type !== 0 && !editEntry) || loadingSaveEntry
                         }
+                        error={newTransactionErrorData.descriptionError}
+                        helperText={newTransactionErrorData.descriptionMessage}
                     />
 
                     <div className="d-flex">
                         <FormControl
                             variant="outlined"
                             margin="dense"
-                            className="w-50 flex-fill mr-3">
+                            className="w-50 flex-fill mr-3"
+                            error={newTransactionErrorData.categoryError}>
                             <InputLabel htmlFor="category">Category</InputLabel>
                             <Select
                                 labelId="category"
@@ -239,6 +291,9 @@ const TransactionModal = ({
                                 <MenuItem value={'expense'}>Expense</MenuItem>
                                 <MenuItem value={'income'}>Income</MenuItem>
                             </Select>
+                            <FormHelperText>
+                                {newTransactionErrorData.categoryMessage}
+                            </FormHelperText>
                         </FormControl>
 
                         <FormControl
@@ -246,7 +301,8 @@ const TransactionModal = ({
                             variant="outlined"
                             disabled={
                                 (type !== 0 && !editEntry) || loadingSaveEntry
-                            }>
+                            }
+                            error={newTransactionErrorData.amountError}>
                             <InputLabel htmlFor="amount">Amount</InputLabel>
                             <OutlinedInput
                                 id="amount"
@@ -261,6 +317,9 @@ const TransactionModal = ({
                                 }
                                 labelWidth={60}
                             />
+                            <FormHelperText>
+                                {newTransactionErrorData.amountMessage}
+                            </FormHelperText>
                         </FormControl>
                     </div>
 
@@ -283,6 +342,8 @@ const TransactionModal = ({
                                     (type !== 0 && !editEntry) ||
                                     loadingSaveEntry
                                 }
+                                error={newTransactionErrorData.dateError}
+                                helperText={newTransactionErrorData.dateMessage}
                             />
                             <TimePicker
                                 margin="dense"
@@ -298,6 +359,8 @@ const TransactionModal = ({
                                     (type !== 0 && !editEntry) ||
                                     loadingSaveEntry
                                 }
+                                error={newTransactionErrorData.dateError}
+                                helperText={newTransactionErrorData.dateMessage}
                             />
                         </MuiPickersUtilsProvider>
                     </div>
@@ -351,7 +414,7 @@ const TransactionModal = ({
                                 disabled={
                                     loadingDeleteEntry || loadingSaveEntry
                                 }
-                                onClick={handleSaveData}>
+                                onClick={validateData}>
                                 {loadingSaveEntry ? (
                                     <CircularProgress
                                         size={24}
