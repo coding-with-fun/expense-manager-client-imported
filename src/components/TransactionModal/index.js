@@ -151,6 +151,7 @@ const TransactionModal = ({
         deleteTransaction(transaction._id)
             .then((response) => {
                 const apiRes = response.success;
+                ToastNotification(apiRes.message, 'success');
                 setLoadingDeleteEntry(false);
                 setIsModalOpen(false);
                 dispatch(setTransactions(apiRes.transactionList));

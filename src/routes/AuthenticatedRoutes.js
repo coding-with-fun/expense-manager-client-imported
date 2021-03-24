@@ -29,7 +29,6 @@ const AuthenticatedRoutes = ({ dispatch }) => {
         getUserDetails()
             .then((response) => {
                 const apiRes = response.success;
-                ToastNotification(apiRes.message, 'success');
                 dispatch(setTransactions(apiRes.user.transactionList));
                 setLoading(false);
             })

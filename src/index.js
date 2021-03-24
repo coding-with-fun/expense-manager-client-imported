@@ -11,7 +11,7 @@ ReactDOM.render(
     <Provider store={store}>
         <App />
         <ToastContainer
-            newestOnTop={true}
+            newestOnTop
             closeButton={false}
             pauseOnFocusLoss={false}
             pauseOnHover={false}
