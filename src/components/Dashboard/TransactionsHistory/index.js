@@ -17,11 +17,7 @@ const TransactionHistory = ({ transactions }) => {
 
             {transactions.slice(0, 3).map((transaction, index) => {
                 return (
-                    <HistoryTransaction
-                        transaction={transaction}
-                        index={index}
-                        key={index}
-                    />
+                    <HistoryTransaction transaction={transaction} key={index} />
                 );
             })}
 

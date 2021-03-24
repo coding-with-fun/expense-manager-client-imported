@@ -2,6 +2,7 @@
     .cancel-entry,
     .delete-entry {
         background: var(--danger);
+        min-width: 110px !important;
         color: #fff;
     }
 

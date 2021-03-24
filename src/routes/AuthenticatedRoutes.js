@@ -39,7 +39,6 @@ const AuthenticatedRoutes = ({ dispatch }) => {
             });
     };
     useEffect(() => {
-        console.log('object route');
         handleGetUserDetails();
         // eslint-disable-next-line
     }, []);

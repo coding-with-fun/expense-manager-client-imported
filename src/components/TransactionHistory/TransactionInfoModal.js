@@ -1,6 +1,7 @@
 import DateFnsUtils from '@date-io/date-fns';
 import {
     Backdrop,
+    CircularProgress,
     Button,
     Dialog,
     DialogActions,
@@ -32,10 +33,13 @@ import {
     TimePicker,
 } from '@material-ui/pickers';
 import moment from 'moment';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { setTransactions } from '../../actions/transactionsActions';
-import { deleteTransaction } from '../../api/transaction.api';
+import {
+    deleteTransaction,
+    updateTransaction,
+} from '../../api/transaction.api';
 import ToastNotification from '../../shared/ToastNotification';
 
 const useStyles = makeStyles((theme) => ({
@@ -64,20 +68,31 @@ const TransactionInfoModal = ({
     isModalOpen,
     setIsModalOpen,
     transaction,
-    index,
     dispatch,
 }) => {
     const [newTransactionData, setNewTransactionData] = useState({
-        title: transaction.title,
-        description: transaction.description,
-        category: transaction.category,
-        amount: transaction.amount,
-        date: transaction.date,
+        title: '',
+        description: '',
+        category: 'expense',
+        amount: '',
+        date: moment().format(),
     });
     const [isDeleteAlertOpen, setIsDeleteAlertOpen] = useState(false);
     const [editEntry, setEditEntry] = useState(false);
+    const [loadingDeleteEntry, setLoadingDeleteEntry] = useState(false);
+    const [loadingSaveEntry, setLoadingSaveEntry] = useState(false);
 
     const classes = useStyles();
+
+    useEffect(() => {
+        setNewTransactionData({
+            title: transaction.title,
+            description: transaction.description,
+            category: transaction.category,
+            amount: transaction.amount,
+            date: moment.unix(transaction.date).format(),
+        });
+    }, [transaction]);
 
     const handleSaveInput = (event) => {
         const inputName = event.target.name;
@@ -96,15 +111,34 @@ const TransactionInfoModal = ({
     };
 
     const handleSaveData = () => {
-        handleCloseModal();
+        setLoadingSaveEntry(true);
+        const data = {
+            ...newTransactionData,
+            date: moment(newTransactionData.date).format('X'),
+        };
+        updateTransaction(data, transaction._id)
+            .then((response) => {
+                const apiRes = response.success;
+                ToastNotification(apiRes.message, 'success');
+                dispatch(setTransactions(apiRes.transactionList));
+                setLoadingSaveEntry(false);
+                handleCloseModal();
+            })
+            .catch((error) => {
+                console.error(error.response.data.error);
+                ToastNotification(error.response.data.error.message);
+                setLoadingSaveEntry(false);
+            });
     };
 
     const handleDeleteEntry = () => {
-        console.log(transaction._id);
+        setLoadingDeleteEntry(true);
+        setIsDeleteAlertOpen(false);
         deleteTransaction(transaction._id)
             .then(async (response) => {
                 const apiRes = response.success;
                 await dispatch(setTransactions(apiRes.transactionList));
+                setLoadingDeleteEntry(false);
             })
             .catch((error) => {
                 console.error(error.response.data.error);
@@ -118,7 +152,7 @@ const TransactionInfoModal = ({
             description: transaction.description,
             category: transaction.category,
             amount: transaction.amount,
-            date: transaction.date,
+            date: moment.unix(transaction.date).format(),
         });
         setEditEntry(false);
         setIsDeleteAlertOpen(false);
@@ -186,7 +220,7 @@ const TransactionInfoModal = ({
                                 label="Category"
                                 name="category">
                                 <MenuItem value={'expense'}>Expense</MenuItem>
-                                <MenuItem value={'Income'}>Income</MenuItem>
+                                <MenuItem value={'income'}>Income</MenuItem>
                             </Select>
                         </FormControl>
 
@@ -250,8 +284,19 @@ const TransactionInfoModal = ({
                             size="medium"
                             className="delete-entry"
                             onClick={() => setIsDeleteAlertOpen(true)}>
-                            <DeleteIcon className="mr-3" />
-                            Delete
+                            {loadingDeleteEntry ? (
+                                <CircularProgress
+                                    size={24}
+                                    style={{
+                                        color: '#fff',
+                                    }}
+                                />
+                            ) : (
+                                <>
+                                    <DeleteIcon className="mr-3" />
+                                    Delete
+                                </>
+                            )}
                         </Fab>
                         {editEntry && (
                             <Fab
@@ -259,9 +304,21 @@ const TransactionInfoModal = ({
                                 aria-label="add"
                                 size="medium"
                                 className="save-entry"
+                                disabled={loadingDeleteEntry}
                                 onClick={handleSaveData}>
-                                <SaveIcon className="mr-3" />
-                                Save
+                                {loadingSaveEntry ? (
+                                    <CircularProgress
+                                        size={24}
+                                        style={{
+                                            color: '#fff',
+                                        }}
+                                    />
+                                ) : (
+                                    <>
+                                        <SaveIcon className="mr-3" />
+                                        Save
+                                    </>
+                                )}
                             </Fab>
                         )}
                         {!editEntry && (
@@ -270,6 +327,7 @@ const TransactionInfoModal = ({
                                 aria-label="add"
                                 size="medium"
                                 className="edit-entry"
+                                disabled={loadingDeleteEntry}
                                 onClick={() => setEditEntry(true)}>
                                 <EditIcon className="mr-3" />
                                 Edit

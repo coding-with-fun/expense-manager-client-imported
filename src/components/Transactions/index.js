@@ -34,11 +34,7 @@ const Transactions = ({ transactions }) => {
             className={classes.allTransactions}>
             {transactions.map((transaction, index) => {
                 return (
-                    <HistoryTransaction
-                        transaction={transaction}
-                        index={index}
-                        key={index}
-                    />
+                    <HistoryTransaction transaction={transaction} key={index} />
                 );
             })}
 

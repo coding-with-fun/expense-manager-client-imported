@@ -73,13 +73,6 @@ const AddNewTransaction = ({ dispatch }) => {
     };
 
     const handleSaveDate = (data) => {
-        const tempData = moment(data).format('X');
-        console.log(
-            tempData,
-            moment(data).format(),
-            moment.unix(tempData).format(),
-            moment.unix(tempData).isValid()
-        );
         setNewTransactionData((userInput) => ({
             ...userInput,
             date: moment(data).format(),
@@ -266,7 +259,9 @@ const AddNewTransaction = ({ dispatch }) => {
                                     {loading ? (
                                         <CircularProgress
                                             size={24}
-                                            color="#fff"
+                                            style={{
+                                                color: '#fff',
+                                            }}
                                         />
                                     ) : (
                                         <>
