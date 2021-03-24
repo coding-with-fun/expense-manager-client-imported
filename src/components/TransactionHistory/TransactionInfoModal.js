@@ -22,11 +22,11 @@ import {
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import {
+    Cancel as CancelIcon,
     Close as CloseIcon,
     Delete as DeleteIcon,
     Edit as EditIcon,
     Save as SaveIcon,
-    Cancel as CancelIcon,
 } from '@material-ui/icons';
 import {
     DatePicker,
@@ -204,7 +204,9 @@ const TransactionInfoModal = ({
                         variant="outlined"
                         margin="dense"
                         fullWidth
-                        disabled={!editEntry && type !== 0}
+                        disabled={
+                            (type !== 0 && !editEntry) || loadingSaveEntry
+                        }
                     />
 
                     <TextField
@@ -218,7 +220,9 @@ const TransactionInfoModal = ({
                         variant="outlined"
                         margin="dense"
                         fullWidth
-                        disabled={!editEntry && type !== 0}
+                        disabled={
+                            (type !== 0 && !editEntry) || loadingSaveEntry
+                        }
                     />
 
                     <div className="d-flex">
@@ -234,7 +238,10 @@ const TransactionInfoModal = ({
                                 onChange={handleSaveInput}
                                 label="Category"
                                 name="category"
-                                disabled={!editEntry && type !== 0}>
+                                disabled={
+                                    (type !== 0 && !editEntry) ||
+                                    loadingSaveEntry
+                                }>
                                 <MenuItem value={'expense'}>Expense</MenuItem>
                                 <MenuItem value={'income'}>Income</MenuItem>
                             </Select>
@@ -243,7 +250,9 @@ const TransactionInfoModal = ({
                         <FormControl
                             margin="dense"
                             variant="outlined"
-                            disabled={!editEntry && type !== 0}>
+                            disabled={
+                                (type !== 0 && !editEntry) || loadingSaveEntry
+                            }>
                             <InputLabel htmlFor="amount">Amount</InputLabel>
                             <OutlinedInput
                                 id="amount"
@@ -276,7 +285,10 @@ const TransactionInfoModal = ({
                                 onChange={handleSaveDate}
                                 animateYearScrolling
                                 format="dd/MM/yyyy"
-                                disabled={!editEntry && type !== 0}
+                                disabled={
+                                    (type !== 0 && !editEntry) ||
+                                    loadingSaveEntry
+                                }
                             />
                             <TimePicker
                                 margin="dense"
@@ -288,7 +300,10 @@ const TransactionInfoModal = ({
                                 value={newTransactionData.date}
                                 autoOk
                                 onChange={handleSaveDate}
-                                disabled={!editEntry && type !== 0}
+                                disabled={
+                                    (type !== 0 && !editEntry) ||
+                                    loadingSaveEntry
+                                }
                             />
                         </MuiPickersUtilsProvider>
                     </div>
