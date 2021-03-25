@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import { setTransactions } from '../actions/transactionsActions';
+import { setUserDetails } from '../actions/userActions';
 import { getUserDetails } from '../api/user.api';
 import Dashboard from '../components/Dashboard';
 import Profile from '../components/Profile';
@@ -31,6 +32,14 @@ const AuthenticatedRoutes = ({ dispatch }) => {
             .then((response) => {
                 const apiRes = response.success;
                 dispatch(setTransactions(apiRes.user.transactionList));
+                dispatch(
+                    setUserDetails({
+                        name: apiRes.user.name,
+                        userName: apiRes.user.userName,
+                        email: apiRes.user.email,
+                        _id: apiRes.user._id,
+                    })
+                );
                 setLoading(false);
             })
             .catch((error) => {

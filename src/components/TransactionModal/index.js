@@ -146,8 +146,6 @@ const TransactionModal = ({
             date: moment(newTransactionData.date).format('X'),
         };
 
-        console.log(data);
-
         for (let field in data) {
             if (!RemoveWhiteSpace(data[`${field}`])) {
                 setNewTransactionErrorData((newTransactionErrorData) => ({
