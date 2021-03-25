@@ -43,6 +43,26 @@ const TopBar = ({ userToken, dispatch }) => {
                             </Link>
                         </NavItem>
                     )}
+                    {window.location.pathname !== '/transactions' && userToken && (
+                        <NavItem>
+                            <Link
+                                to="/transactions"
+                                className="nav-link"
+                                onClick={toggle}>
+                                Transactions
+                            </Link>
+                        </NavItem>
+                    )}
+                    {window.location.pathname !== '/profile' && userToken && (
+                        <NavItem>
+                            <Link
+                                to="/profile"
+                                className="nav-link"
+                                onClick={toggle}>
+                                Profile
+                            </Link>
+                        </NavItem>
+                    )}
                     {userToken && (
                         <NavItem>
                             <Link

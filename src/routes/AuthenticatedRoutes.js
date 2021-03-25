@@ -6,6 +6,7 @@ import { Redirect, Route, Switch } from 'react-router-dom';
 import { setTransactions } from '../actions/transactionsActions';
 import { getUserDetails } from '../api/user.api';
 import Dashboard from '../components/Dashboard';
+import Profile from '../components/Profile';
 import Transactions from '../components/Transactions';
 import ToastNotification from '../shared/ToastNotification';
 
@@ -50,6 +51,7 @@ const AuthenticatedRoutes = ({ dispatch }) => {
         <Switch>
             <Route exact path="/" component={Dashboard} />
             <Route exact path="/transactions" component={Transactions} />
+            <Route exact path="/profile" component={Profile} />
             <Redirect to="/" />
         </Switch>
     );
