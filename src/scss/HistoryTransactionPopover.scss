@@ -15,16 +15,13 @@
         color: #fff;
     }
 
-    .edit-icon:hover {
-        background: #1d8635;
+    .edit-icon:hover,
+    .delete-icon:hover {
+        filter: brightness(0.75);
     }
 
     .delete-icon {
         background: var(--danger);
         color: #fff;
-    }
-
-    .delete-icon:hover {
-        background: #c31829;
     }
 }

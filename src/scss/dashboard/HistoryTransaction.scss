@@ -24,8 +24,23 @@
         }
     }
 
-    .success-status {
-        background: var(--success);
+    .income-status,
+    .expense-status {
         width: 10px;
+    }
+
+    .income-status {
+        background: var(--green);
+    }
+
+    .expense-status {
+        background: var(--red);
+    }
+}
+
+.history-transaction-container:hover {
+    .income-status,
+    .expense-status {
+        filter: brightness(0.75);
     }
 }

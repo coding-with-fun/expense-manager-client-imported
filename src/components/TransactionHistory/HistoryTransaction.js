@@ -9,7 +9,7 @@ const HistoryTransaction = ({ transaction }) => {
     return (
         <Paper variant="outlined" className="history-transaction-container">
             <div
-                className="d-flex w-100"
+                className="d-flex w-100 individual-entry"
                 onClick={() => {
                     setIsModalOpen(true);
                 }}>
@@ -24,7 +24,7 @@ const HistoryTransaction = ({ transaction }) => {
                     </div>
                     <div className="amount">${transaction.amount}</div>
                 </div>
-                <div className="success-status" />
+                <div className={`${transaction.category}-status`} />
             </div>
 
             {isModalOpen && (
