@@ -8,37 +8,16 @@ const UPDATE_TRANSACTION = transactionRoot + '/update';
 const DELETE_TRANSACTION = transactionRoot + '/delete';
 
 export const addTransaction = async (body) => {
-    const headers = {
-        'x-auth-token': 'Bearer ' + localStorage.getItem('emc-token'),
-    };
-
-    const response = await axios.post(ADD_TRANSACTION, body, {
-        withCredentials: true,
-        headers,
-    });
+    const response = await axios.post(ADD_TRANSACTION, body);
     return response.data;
 };
 
 export const updateTransaction = async (body, id) => {
-    const headers = {
-        'x-auth-token': 'Bearer ' + localStorage.getItem('emc-token'),
-    };
-
-    const response = await axios.put(UPDATE_TRANSACTION + '?id=' + id, body, {
-        withCredentials: true,
-        headers,
-    });
+    const response = await axios.put(UPDATE_TRANSACTION + '?id=' + id, body);
     return response.data;
 };
 
 export const deleteTransaction = async (id) => {
-    const headers = {
-        'x-auth-token': 'Bearer ' + localStorage.getItem('emc-token'),
-    };
-
-    const response = await axios.delete(DELETE_TRANSACTION + '?id=' + id, {
-        withCredentials: true,
-        headers,
-    });
+    const response = await axios.delete(DELETE_TRANSACTION + '?id=' + id);
     return response.data;
 };
