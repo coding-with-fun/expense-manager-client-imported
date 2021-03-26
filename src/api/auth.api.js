@@ -14,7 +14,7 @@ export const authenticateUser = async (body, routeType) => {
     const response = await axios.post(
         routeType === 0 ? SIGNIN_URL : SIGNUP_URL,
         body,
-        { headers }
+        { withCredentials: true, headers }
     );
     return response.data;
 };

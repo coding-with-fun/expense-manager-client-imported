@@ -9,6 +9,9 @@ export const getUserDetails = async () => {
     const headers = {
         'x-auth-token': 'Bearer ' + localStorage.getItem('emc-token'),
     };
-    const response = await axios.get(GET_USER_DETAILS, { headers });
+    const response = await axios.get(GET_USER_DETAILS, {
+        withCredentials: true,
+        headers,
+    });
     return response.data;
 };

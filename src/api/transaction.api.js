@@ -12,7 +12,10 @@ export const addTransaction = async (body) => {
         'x-auth-token': 'Bearer ' + localStorage.getItem('emc-token'),
     };
 
-    const response = await axios.post(ADD_TRANSACTION, body, { headers });
+    const response = await axios.post(ADD_TRANSACTION, body, {
+        withCredentials: true,
+        headers,
+    });
     return response.data;
 };
 
@@ -22,6 +25,7 @@ export const updateTransaction = async (body, id) => {
     };
 
     const response = await axios.put(UPDATE_TRANSACTION + '?id=' + id, body, {
+        withCredentials: true,
         headers,
     });
     return response.data;
@@ -33,6 +37,7 @@ export const deleteTransaction = async (id) => {
     };
 
     const response = await axios.delete(DELETE_TRANSACTION + '?id=' + id, {
+        withCredentials: true,
         headers,
     });
     return response.data;
