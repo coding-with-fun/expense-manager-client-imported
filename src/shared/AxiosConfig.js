@@ -1,3 +1,5 @@
 export const AxiosConfig = {
-    authToken: 'Bearer ' + localStorage.getItem('emc-token'),
+    headers: {
+        'x-auth-token': 'Bearer ' + localStorage.getItem('emc-token'),
+    },
 };
